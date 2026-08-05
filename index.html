@@ -7,6 +7,7 @@
 <meta name="description" content="اکوسیستم Cube — اتصال، پرداخت، سرگرمی، بازار دیجیتال و ساخت آینده. CubeVPN، CubePay، CubeGift، Cubely و CubeSaz در یک جهان.">
 <meta property="og:title" content="Cube Ecosystem">
 <meta property="og:description" content="فراتر از یک سرویس، یک اکوسیستم دیجیتال.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Crect width='24' height='24' rx='5' fill='%23050505'/%3E%3Cpath d='M12 3.2 19.6 7.4v9.2L12 20.8 4.4 16.6V7.4L12 3.2Z' stroke='%230066FF' stroke-width='1.4'/%3E%3Cpath d='M12 3.2v8.6m0 0 7.6-4.4M12 11.8 4.4 7.4M12 11.8v9' stroke='%237C3AED' stroke-width='1.1'/%3E%3C/svg%3E">
 <link rel="preload" href="assets/fonts/vazirmatn-arabic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -810,6 +811,18 @@ addEventListener('mousemove',e=>{
   mouse.ny=(e.clientY/innerHeight-.5)*2;
 },{passive:true});
 
+/* ───────── render gating ─────────
+   Both 3D scenes are decorative, so they should not burn frames while the
+   tab is in the background or the canvas has scrolled out of view. */
+function visibilityGate(el){
+  let onScreen=true;
+  if('IntersectionObserver' in window){
+    onScreen=false;
+    new IntersectionObserver(es=>{onScreen=es[0].isIntersecting},{rootMargin:'120px'}).observe(el);
+  }
+  return ()=>onScreen&&!document.hidden;
+}
+
 /* ───────── WebGL support check ───────── */
 const hasWebGL=(()=>{try{const c=document.createElement('canvas');
   return !!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl')));
@@ -921,7 +934,10 @@ function initBackground(){
 
   let smx=0,smy=0;
   const clock=new THREE.Clock();
+  const shouldRender=()=>!document.hidden;
   (function frame(){
+    requestAnimationFrame(frame);
+    if(!shouldRender())return;
     const t=clock.getElapsedTime();
     uni.uTime.value=t;
     uni.uMouse.value.set(mouse.x/innerWidth,1-mouse.y/innerHeight);
@@ -933,7 +949,6 @@ function initBackground(){
     renderer.clear();
     renderer.render(shaderScene,orthoCam);
     renderer.render(starScene,cam);
-    requestAnimationFrame(frame);
   })();
 }
 
@@ -1032,7 +1047,10 @@ function initHeroCube(){
 
   let rx=0,ry=0;
   const clock=new THREE.Clock();
+  const shouldRender=visibilityGate(holder);
   (function frame(){
+    requestAnimationFrame(frame);
+    if(!shouldRender())return;
     const t=clock.getElapsedTime();
     /* mouse-reactive rotation */
     rx+=((mouse.ny*.45)-rx)*.045;
@@ -1057,7 +1075,6 @@ function initHeroCube(){
     pgeo.attributes.position.needsUpdate=true;
     cloud.rotation.y=t*.05+ry*.3;
     renderer.render(scene,cam);
-    requestAnimationFrame(frame);
   })();
 }
 
@@ -1290,7 +1307,10 @@ function loadThree(){
         worlds=[...orbit.querySelectorAll('.world[data-angle]')],
         core=orbit.querySelector('.core-world');
   let rot=0;
+  const shouldRender=visibilityGate(stage);
   (function frame(){
+    requestAnimationFrame(frame);
+    if(!shouldRender())return;
     rot+=.15;
     const R=Math.min(stage.offsetWidth,560)/2.4;
     orbit.style.transform='rotateX('+(mouse.ny*7)+'deg) rotateY('+(mouse.nx*10)+'deg)';
@@ -1303,7 +1323,6 @@ function loadThree(){
       w.style.zIndex=Z>0?3:1;
       w.style.opacity=(.55+((Z+R)/(2*R))*.45).toFixed(2);
     }
-    requestAnimationFrame(frame);
   })();
 })();
 
@@ -1337,12 +1356,14 @@ function loadThree(){
     x.stroke();x.restore();
   }
   let t=0;
+  const shouldRender=visibilityGate(c);
   (function frame(){
+    requestAnimationFrame(frame);
+    if(!shouldRender())return;
     x.clearRect(0,0,W,H);
     if(++t%14===0)spawn();
     for(const k of cubes){k.y-=k.vy;k.rot+=k.vr;k.life++;drawCube(k)}
     cubes=cubes.filter(k=>k.y>-40);
-    requestAnimationFrame(frame);
   })();
 })();
 </script>
