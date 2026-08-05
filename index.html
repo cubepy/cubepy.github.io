@@ -119,8 +119,17 @@ nav.scrolled{
 .nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--en);font-weight:700;letter-spacing:.12em;font-size:15px}
 .nav-logo .mini-cube{width:22px;height:22px;flex:none}
 .nav-links{display:flex;gap:26px;font-size:13.5px;color:var(--muted)}
-.nav-links a{transition:color .25s}
+.nav-links a{position:relative;transition:color .25s}
 .nav-links a:hover{color:#fff}
+.nav-links a::after{
+  content:"";position:absolute;left:50%;bottom:-8px;
+  width:0;height:2px;border-radius:2px;transform:translateX(-50%);
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  box-shadow:0 0 10px rgba(0,102,255,.75);
+  transition:width .35s cubic-bezier(.16,1,.3,1);
+}
+.nav-links a.active{color:#fff}
+.nav-links a.active::after{width:18px}
 @media(max-width:760px){.nav-links{display:none}}
 
 /* ---------- generic section ---------- */
@@ -1298,6 +1307,34 @@ function loadThree(){
 (function(){
   const nav=document.getElementById('nav');
   addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+})();
+
+/* ───────── nav: highlight the section you're in ─────────
+   Measured live rather than via IntersectionObserver: the product
+   sections are pinned (position:fixed) while active, so the section
+   crossing the viewport's upper third is the reliable signal. */
+(function(){
+  const items=[...document.querySelectorAll('.nav-links a')]
+    .map(a=>({a,sec:document.querySelector(a.getAttribute('href'))}))
+    .filter(o=>o.sec);
+  if(!items.length)return;
+  let current=null,queued=false;
+  function update(){
+    queued=false;
+    const line=innerHeight*.42;
+    let hit=null;
+    for(const o of items){
+      const r=o.sec.getBoundingClientRect();
+      if(r.top<=line&&r.bottom>=line){hit=o.a;break}
+    }
+    if(hit===current)return;
+    if(current)current.classList.remove('active');
+    if(hit)hit.classList.add('active');
+    current=hit;
+  }
+  addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(update)}},{passive:true});
+  addEventListener('resize',update,{passive:true});
+  update();
 })();
 
 /* ───────── worlds orbit (mouse parallax + slow rotation) ───────── */
