@@ -236,6 +236,7 @@ h1.hero-title{
   transition:transform .35s,box-shadow .35s,border-color .35s;
 }
 .net-node:hover{transform:translateY(-4px);border-color:rgba(0,140,255,.5);box-shadow:0 0 26px rgba(0,102,255,.25)}
+.net-node[data-brand]{cursor:pointer}
 .net-core{
   grid-column:2;grid-row:2;
   font-size:17px;font-weight:700;letter-spacing:.05em;
@@ -584,12 +585,12 @@ footer{
         <line x1="42" y1="58" x2="24" y2="80"/>
         <line x1="58" y1="58" x2="76" y2="80"/>
       </svg>
-      <div class="net-node net-top en">CubeVPN</div>
-      <div class="net-node net-left en">CubeGift</div>
+      <div class="net-node net-top en" data-brand="vpn">CubeVPN</div>
+      <div class="net-node net-left en" data-brand="gift">CubeGift</div>
       <div class="net-node net-core en">CUBE</div>
-      <div class="net-node net-right en">CubePay</div>
-      <div class="net-node net-bl en">Cubely</div>
-      <div class="net-node net-br en">CubeSaz</div>
+      <div class="net-node net-right en" data-brand="pay">CubePay</div>
+      <div class="net-node net-bl en" data-brand="cubely">Cubely</div>
+      <div class="net-node net-br en" data-brand="saz">CubeSaz</div>
     </div>
 
     <p class="net-msg reveal"><strong>CUBE is the core.</strong><br>Everything connects around it.</p>
@@ -1180,13 +1181,13 @@ if(hasWebGL)(function(){
   const BRANDS={
     vpn:{name:'CubeVPN',color:'#0066FF',glow:'rgba(0,102,255,.18)',
       tag:'اتصال سریع، امن و بدون مرز.',
-      desc:'زیرساخت اینترنت آزاد اکوسیستم Cube — اتصالی پایدار که هیچ مرزی نمی‌شناسد.',
-      feats:['سرعت بالا و اتصال پایدار','سرورهای متنوع و به‌روز','امنیت و رمزنگاری ترافیک','پشتیبانی از همه پلتفرم‌ها'],
+      desc:'سرویس اتصال امن اکوسیستم Cube با بیش از ۴ سال سابقه — اینترنت آزاد و پایدار برای همه.',
+      feats:['بر پایه پروتکل‌های امن و به‌روز','بیش از ۴ سال سابقه فعالیت','خرید و تمدید خودکار با ربات تلگرام','پشتیبانی مستقیم + کانال آموزش اختصاصی'],
       url:'https://t.me/Cube_VPNN',cta:'Join CubeVPN'},
     pay:{name:'CubePay',color:'#7C3AED',glow:'rgba(124,58,237,.18)',
-      tag:'نسل جدید پرداخت‌های دیجیتال.',
-      desc:'شبکه پرداختی که کارت، کریپتو و هر تراکنشی را در یک تجربه یکپارچه می‌کند.',
-      feats:['پرداخت کارت‌به‌کارت با تأیید خودکار','پرداخت کریپتو: USDT · TRX · TON','API ساده برای ربات‌ها و سایت‌ها','تسویه سریع و شفاف'],
+      tag:'درگاه پرداخت خودکار کارت‌به‌کارت.',
+      desc:'درگاهی که به‌جای شما پیامک بانکتان را می‌خواند — پرداخت کارت‌به‌کارت و کریپتو برای ربات‌ها و سایت‌ها.',
+      feats:['تشخیص و تسویه خودکار زیر ۳۰ ثانیه','بدون نیاز به اینماد یا کد اقتصادی','پرداخت کریپتو: USDT · TRX · TON','API ساده با مستندات کامل'],
       url:'https://t.me/Cubepy',cta:'Join CubePay'},
     gift:{name:'CubeGift',color:'#0066FF',glow:'rgba(0,102,255,.18)',
       tag:'دنیای گیفت کارت‌ها، در یک تجربه مدرن.',
@@ -1194,9 +1195,9 @@ if(hasWebGL)(function(){
       feats:['گیفت کارت‌های معتبر جهانی','تحویل آنی بعد از خرید','قیمت‌های رقابتی','پشتیبانی واقعی'],
       url:'https://cubegift.ir/',cta:'Visit cubegift.ir'},
     cubely:{name:'Cubely',color:'#7C3AED',glow:'rgba(124,58,237,.18)',
-      tag:'بازار خدمات دیجیتال.',
-      desc:'هر چیزی که آنلاین نیاز داری — در یک مارکت دیجیتال مدرن، سریع و قابل اعتماد.',
-      feats:['تنوع بالای خدمات دیجیتال','خرید سریع و بی‌دردسر','پرداخت امن','همیشه در حال گسترش'],
+      tag:'فروشگاه سرویس‌های دیجیتال.',
+      desc:'سرویس‌های دیجیتال برای بیش از ۴۰ پلتفرم — سریع، امن و کاملاً خودکار.',
+      feats:['بیش از ۴۰ پلتفرم و سرویس','پردازش خودکار سفارش‌ها','بازگشت خودکار وجه در صورت شکست سفارش','کیف پول + پشتیبانی انسانی در تلگرام'],
       url:'https://cubely.ir/',cta:'Visit cubely.ir'},
     saz:{name:'CubeSaz',color:'#0066FF',glow:'rgba(0,102,255,.18)',
       tag:'ایده‌ها را تبدیل به محصول کن.',
