@@ -606,17 +606,18 @@ footer{
     <p class="section-fa reveal">همه‌چیز از یک هسته شروع می‌شود — CUBE قلب اکوسیستم است<br>و پنج جهان دیجیتال به دور آن می‌چرخند.</p>
 
     <div class="net-scene reveal">
+      <!-- Connector lines are generated from the real card positions in JS
+           (see "network diagram connectors"), so they stay attached to the
+           core at any viewport width. -->
       <svg class="net-lines" width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 100">
         <defs>
-          <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="1">
+          <!-- userSpaceOnUse, not the default objectBoundingBox: a horizontal
+               line has zero bbox height (and a vertical one zero width), which
+               collapses a bbox-relative gradient and renders nothing. -->
+          <linearGradient id="lineGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">
             <stop offset="0" stop-color="#0066FF"/><stop offset="1" stop-color="#7C3AED"/>
           </linearGradient>
         </defs>
-        <line x1="50" y1="14" x2="50" y2="42"/>
-        <line x1="18" y1="50" x2="38" y2="50"/>
-        <line x1="62" y1="50" x2="82" y2="50"/>
-        <line x1="42" y1="58" x2="24" y2="80"/>
-        <line x1="58" y1="58" x2="76" y2="80"/>
       </svg>
       <div class="net-node net-top en" data-brand="vpn">CubeVPN</div>
       <div class="net-node net-left en" data-brand="gift">CubeGift</div>
@@ -1247,6 +1248,60 @@ function loadThree(){
   }
   document.querySelectorAll('a,button,.world,.net-node').forEach(el=>
     el.addEventListener('mouseenter',blip));
+})();
+
+/* ───────── network diagram connectors ─────────
+   Drawn from the cards' measured positions rather than fixed coordinates,
+   so every one of the five stays attached to the core as the grid reflows
+   (and under RTL, where the left/right columns swap visually). */
+(function(){
+  const scene=document.querySelector('.net-scene');
+  if(!scene)return;
+  const svg=scene.querySelector('.net-lines'),
+        core=scene.querySelector('.net-core'),
+        grad=scene.querySelector('#lineGrad'),
+        nodes=[...scene.querySelectorAll('.net-node:not(.net-core)')];
+  if(!svg||!core||!nodes.length)return;
+  const NS='http://www.w3.org/2000/svg',GAP=9;
+
+  const box=(el,base)=>{
+    const r=el.getBoundingClientRect();
+    return {x:r.left-base.left+r.width/2,y:r.top-base.top+r.height/2,w:r.width,h:r.height};
+  };
+  /* Walk out from a box's centre along (dx,dy) until we hit its border. */
+  const edge=(b,dx,dy)=>{
+    const hw=b.w/2+GAP,hh=b.h/2+GAP;
+    const s=Math.min(dx?hw/Math.abs(dx):Infinity,dy?hh/Math.abs(dy):Infinity);
+    return [b.x+dx*s,b.y+dy*s];
+  };
+
+  function draw(){
+    const base=scene.getBoundingClientRect();
+    if(!base.width||!base.height)return;
+    svg.setAttribute('viewBox','0 0 '+base.width+' '+base.height);
+    if(grad){grad.setAttribute('x2',base.width);grad.setAttribute('y2',base.height)}
+    svg.querySelectorAll('line').forEach(l=>l.remove());
+    const c=box(core,base);
+    for(const n of nodes){
+      const p=box(n,base);
+      const dx=p.x-c.x,dy=p.y-c.y;
+      if(!dx&&!dy)continue;
+      const len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len;
+      const [x1,y1]=edge(c,ux,uy),[x2,y2]=edge(p,-ux,-uy);
+      /* Skip if the cards are so close the gap eats the whole run. */
+      if((x2-x1)*ux+(y2-y1)*uy<=2)continue;
+      const l=document.createElementNS(NS,'line');
+      l.setAttribute('x1',x1.toFixed(1));l.setAttribute('y1',y1.toFixed(1));
+      l.setAttribute('x2',x2.toFixed(1));l.setAttribute('y2',y2.toFixed(1));
+      svg.appendChild(l);
+    }
+  }
+
+  draw();
+  addEventListener('resize',draw,{passive:true});
+  addEventListener('load',draw);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
+  if(window.ResizeObserver)new ResizeObserver(draw).observe(scene);
 })();
 
 /* ───────── brand detail modal ───────── */
