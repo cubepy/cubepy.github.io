@@ -1317,30 +1317,44 @@ function loadThree(){
 })();
 
 /* ───────── nav: highlight the section you're in ─────────
-   Measured live rather than via IntersectionObserver: the product
-   sections are pinned (position:fixed) while active, so the section
-   crossing the viewport's upper third is the reliable signal. */
+   Driven by ScrollTrigger where available, because it also owns the pinning
+   of the product sections and therefore knows exactly when one is on screen.
+   Reading element rects directly is unreliable here: a section that is still
+   pinned (position:fixed, covering the viewport) during a fast scroll would
+   otherwise keep winning over the section that has actually come into view,
+   which stuck the highlight one item behind. */
 (function(){
   const items=[...document.querySelectorAll('.nav-links a')]
     .map(a=>({a,sec:document.querySelector(a.getAttribute('href'))}))
     .filter(o=>o.sec);
   if(!items.length)return;
-  let current=null,queued=false;
+
+  let current=null;
+  function setActive(a){
+    if(a===current)return;
+    if(current)current.classList.remove('active');
+    if(a)a.classList.add('active');
+    current=a;
+  }
+
+  let queued=false;
   function update(){
     queued=false;
     const line=innerHeight*.42;
     let hit=null;
+    /* Scan all of them and keep the LAST match rather than breaking on the
+       first. During a fast scroll a section can still be pinned — fixed and
+       covering the viewport — while the next one has already come into view;
+       taking the first match left the highlight stuck one item behind. */
     for(const o of items){
       const r=o.sec.getBoundingClientRect();
-      if(r.top<=line&&r.bottom>=line){hit=o.a;break}
+      if(r.top<=line&&r.bottom>=line)hit=o.a;
     }
-    if(hit===current)return;
-    if(current)current.classList.remove('active');
-    if(hit)hit.classList.add('active');
-    current=hit;
+    setActive(hit);
   }
   addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(update)}},{passive:true});
   addEventListener('resize',update,{passive:true});
+  if(window.ScrollTrigger)ScrollTrigger.addEventListener('refresh',update);
   update();
 })();
 
