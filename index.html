@@ -578,7 +578,10 @@ footer{
         <a class="btn-ghost" href="#vpn">معرفی محصولات</a>
       </div>
     </div>
-    <div class="hero-scene reveal" id="heroScene">
+    <!-- no .reveal here: heroIntro() owns this element's entrance, and the
+         CSS opacity:0 that .reveal applies would be captured as the start
+         value of the scroll-out tween below. -->
+    <div class="hero-scene" id="heroScene">
       <canvas id="cubeCanvas"></canvas>
       <div class="cube-wrap">
         <div class="cube">
@@ -1151,11 +1154,15 @@ function loadThree(){
     });
   });
 
-  /* hero parallax out */
-  gsap.to('#heroCopy',{yPercent:-22,opacity:.05,ease:'none',
-    scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
-  gsap.to('#heroScene',{yPercent:-10,scale:.88,opacity:.2,ease:'none',
-    scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
+  /* Hero parallax out. Explicit fromTo + immediateRender:false so the
+     start state is pinned to the fully-visible hero and never inherited
+     from whatever opacity happens to be set when the tween is built. */
+  const heroOut={trigger:'#hero',start:'top top',end:'bottom top',scrub:true};
+  gsap.fromTo('#heroCopy',{yPercent:0,opacity:1},
+    {yPercent:-22,opacity:.05,ease:'none',immediateRender:false,scrollTrigger:heroOut});
+  gsap.fromTo('#heroScene',{yPercent:0,scale:1,opacity:1},
+    {yPercent:-10,scale:.88,opacity:.2,ease:'none',immediateRender:false,
+     scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
 
   /* products: pinned, Apple-style on desktop; simple reveals on mobile */
   ScrollTrigger.matchMedia({
