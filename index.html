@@ -417,6 +417,66 @@ h1.hero-title{
 .trust-lines .dim{color:rgba(255,255,255,.35)}
 .trust-fa{margin-top:26px;color:var(--muted);font-size:16px;line-height:2.2;font-weight:300}
 
+/* ---------- brand modal ---------- */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(3,3,7,.55);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;padding:22px;
+  opacity:0;pointer-events:none;transition:opacity .35s;
+}
+.modal-backdrop.open{opacity:1;pointer-events:auto}
+.modal{
+  width:min(460px,94vw);position:relative;
+  border-radius:26px;padding:36px 32px 30px;
+  background:linear-gradient(165deg,rgba(22,27,52,.92),rgba(9,9,17,.96));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 30px 90px rgba(0,0,0,.65),0 0 70px rgba(0,102,255,.10);
+  transform:translateY(26px) scale(.95);
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.modal-backdrop.open .modal{transform:none}
+.modal::before{
+  content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;
+  background:radial-gradient(circle at 80% 0%,var(--modal-glow,rgba(0,102,255,.16)),transparent 55%);
+}
+.modal-close{
+  position:absolute;top:16px;inset-inline-start:16px;z-index:2;
+  width:34px;height:34px;border-radius:12px;border:1px solid var(--glass-border);
+  background:var(--glass);color:var(--muted);font-size:15px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:color .25s,border-color .25s;
+}
+.modal-close:hover{color:#fff;border-color:rgba(255,255,255,.35)}
+.modal-head{display:flex;align-items:center;gap:12px;position:relative}
+.modal-head i{
+  width:12px;height:12px;border-radius:4px;flex:none;
+  background:var(--modal-color,var(--blue));
+  box-shadow:0 0 16px var(--modal-color,var(--blue));
+}
+.modal-name{font-family:var(--en);font-size:26px;font-weight:700;letter-spacing:.02em}
+.modal-tag{font-size:16.5px;font-weight:700;margin-top:18px;line-height:1.9;position:relative}
+.modal-desc{color:var(--muted);font-size:14px;font-weight:300;line-height:2.1;margin-top:10px;position:relative}
+.modal-feats{list-style:none;margin-top:22px;display:grid;gap:11px;position:relative}
+.modal-feats li{
+  display:flex;align-items:center;gap:10px;
+  font-size:13.5px;color:rgba(255,255,255,.78);line-height:1.8;
+}
+.modal-feats li::before{
+  content:"";width:7px;height:7px;border-radius:2px;flex:none;
+  background:var(--modal-color,var(--blue));
+  box-shadow:0 0 9px var(--modal-color,var(--blue));
+}
+.modal-cta{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  margin-top:28px;padding:15px;border-radius:15px;position:relative;
+  font-family:var(--en);font-size:14.5px;font-weight:500;letter-spacing:.03em;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  box-shadow:0 0 26px rgba(0,102,255,.3),inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .3s,box-shadow .3s;
+}
+.modal-cta:hover{transform:translateY(-2px);box-shadow:0 8px 34px rgba(124,58,237,.4),inset 0 1px 0 rgba(255,255,255,.22)}
+
 /* ---------- footer ---------- */
 footer{
   position:relative;z-index:2;background:#000;
@@ -643,24 +703,24 @@ footer{
             <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" stroke="#fff" stroke-width="1.3"/><path d="M12 2v10m0 0 9-5m-9 5-9-5m9 5v10" stroke="rgba(255,255,255,.7)" stroke-width="1"/></svg>
           </div><span>CUBE</span>
         </div>
-        <a class="world" href="https://t.me/Cube_VPNN" target="_blank" rel="noopener" data-angle="0">
+        <a class="world" href="https://t.me/Cube_VPNN" target="_blank" rel="noopener" data-angle="0" data-brand="vpn">
           <div class="sphere"></div><span>CubeVPN</span>
         </a>
-        <a class="world pu" href="https://t.me/Cubepy" target="_blank" rel="noopener" data-angle="72">
+        <a class="world pu" href="https://t.me/Cubepy" target="_blank" rel="noopener" data-angle="72" data-brand="pay">
           <div class="sphere"></div><span>CubePay</span>
         </a>
-        <a class="world" href="https://cubegift.ir/" target="_blank" rel="noopener" data-angle="144">
+        <a class="world" href="https://cubegift.ir/" target="_blank" rel="noopener" data-angle="144" data-brand="gift">
           <div class="sphere"></div><span>CubeGift</span>
         </a>
-        <a class="world pu" href="https://cubely.ir/" target="_blank" rel="noopener" data-angle="216">
+        <a class="world pu" href="https://cubely.ir/" target="_blank" rel="noopener" data-angle="216" data-brand="cubely">
           <div class="sphere"></div><span>Cubely</span>
         </a>
-        <a class="world" href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-angle="288">
+        <a class="world" href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-angle="288" data-brand="saz">
           <div class="sphere"></div><span>CubeSaz</span>
         </a>
       </div>
     </div>
-    <div class="worlds-hint">موس را حرکت بده — جهان‌ها با تو می‌چرخند</div>
+    <div class="worlds-hint">روی هر جهان کلیک کن تا جزئیاتش را ببینی</div>
   </div>
 </section>
 
@@ -695,14 +755,26 @@ footer{
   <div class="footer-name en">CUBE ECOSYSTEM</div>
   <div class="footer-motto">Connect.<br>Create.<br>Evolve.</div>
   <div class="footer-links">
-    <a href="https://t.me/Cube_VPNN" target="_blank" rel="noopener"><i></i>CubeVPN</a>
-    <a href="https://t.me/Cubepy" target="_blank" rel="noopener"><i></i>CubePay</a>
-    <a href="https://cubegift.ir/" target="_blank" rel="noopener"><i></i>CubeGift</a>
-    <a href="https://cubely.ir/" target="_blank" rel="noopener"><i></i>Cubely</a>
-    <a href="https://t.me/CubeSaz" target="_blank" rel="noopener"><i></i>CubeSaz</a>
+    <a href="https://t.me/Cube_VPNN" target="_blank" rel="noopener" data-brand="vpn"><i></i>CubeVPN</a>
+    <a href="https://t.me/Cubepy" target="_blank" rel="noopener" data-brand="pay"><i></i>CubePay</a>
+    <a href="https://cubegift.ir/" target="_blank" rel="noopener" data-brand="gift"><i></i>CubeGift</a>
+    <a href="https://cubely.ir/" target="_blank" rel="noopener" data-brand="cubely"><i></i>Cubely</a>
+    <a href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-brand="saz"><i></i>CubeSaz</a>
   </div>
   <div class="footer-copy">© Cube Ecosystem — Connect. Create. Evolve.</div>
 </footer>
+
+<!-- brand detail modal -->
+<div class="modal-backdrop" id="brandModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="بستن">✕</button>
+    <div class="modal-head"><i></i><div class="modal-name en" id="modalName"></div></div>
+    <div class="modal-tag" id="modalTag"></div>
+    <p class="modal-desc" id="modalDesc"></p>
+    <ul class="modal-feats" id="modalFeats"></ul>
+    <a class="modal-cta" id="modalCta" target="_blank" rel="noopener"></a>
+  </div>
+</div>
 
 <script src="assets/vendor/three.min.js"></script>
 <script src="assets/vendor/gsap.min.js"></script>
@@ -1101,6 +1173,67 @@ if(hasWebGL)(function(){
   }
   document.querySelectorAll('a,button,.world,.net-node').forEach(el=>
     el.addEventListener('mouseenter',blip));
+})();
+
+/* ───────── brand detail modal ───────── */
+(function(){
+  const BRANDS={
+    vpn:{name:'CubeVPN',color:'#0066FF',glow:'rgba(0,102,255,.18)',
+      tag:'اتصال سریع، امن و بدون مرز.',
+      desc:'زیرساخت اینترنت آزاد اکوسیستم Cube — اتصالی پایدار که هیچ مرزی نمی‌شناسد.',
+      feats:['سرعت بالا و اتصال پایدار','سرورهای متنوع و به‌روز','امنیت و رمزنگاری ترافیک','پشتیبانی از همه پلتفرم‌ها'],
+      url:'https://t.me/Cube_VPNN',cta:'Join CubeVPN'},
+    pay:{name:'CubePay',color:'#7C3AED',glow:'rgba(124,58,237,.18)',
+      tag:'نسل جدید پرداخت‌های دیجیتال.',
+      desc:'شبکه پرداختی که کارت، کریپتو و هر تراکنشی را در یک تجربه یکپارچه می‌کند.',
+      feats:['پرداخت کارت‌به‌کارت با تأیید خودکار','پرداخت کریپتو: USDT · TRX · TON','API ساده برای ربات‌ها و سایت‌ها','تسویه سریع و شفاف'],
+      url:'https://t.me/Cubepy',cta:'Join CubePay'},
+    gift:{name:'CubeGift',color:'#0066FF',glow:'rgba(0,102,255,.18)',
+      tag:'دنیای گیفت کارت‌ها، در یک تجربه مدرن.',
+      desc:'گیفت کارت‌های دیجیتال از سراسر دنیا — برای بازی، اپ‌استورها و سرویس‌های جهانی.',
+      feats:['گیفت کارت‌های معتبر جهانی','تحویل آنی بعد از خرید','قیمت‌های رقابتی','پشتیبانی واقعی'],
+      url:'https://cubegift.ir/',cta:'Visit cubegift.ir'},
+    cubely:{name:'Cubely',color:'#7C3AED',glow:'rgba(124,58,237,.18)',
+      tag:'بازار خدمات دیجیتال.',
+      desc:'هر چیزی که آنلاین نیاز داری — در یک مارکت دیجیتال مدرن، سریع و قابل اعتماد.',
+      feats:['تنوع بالای خدمات دیجیتال','خرید سریع و بی‌دردسر','پرداخت امن','همیشه در حال گسترش'],
+      url:'https://cubely.ir/',cta:'Visit cubely.ir'},
+    saz:{name:'CubeSaz',color:'#0066FF',glow:'rgba(0,102,255,.18)',
+      tag:'ایده‌ها را تبدیل به محصول کن.',
+      desc:'بازوی ساخت اکوسیستم Cube — ربات‌ها و ابزارهای هوشمندی که ایده تو را به واقعیت تبدیل می‌کنند.',
+      feats:['ساخت ربات‌های تلگرام اختصاصی','ابزارهای مبتنی بر هوش مصنوعی','از ایده تا محصول نهایی','توسعه سفارشی برای کسب‌وکارها'],
+      url:'https://t.me/CubeSaz',cta:'Join CubeSaz'}
+  };
+  const bd=document.getElementById('brandModal'),
+        modal=bd.querySelector('.modal'),
+        elName=document.getElementById('modalName'),
+        elTag=document.getElementById('modalTag'),
+        elDesc=document.getElementById('modalDesc'),
+        elFeats=document.getElementById('modalFeats'),
+        elCta=document.getElementById('modalCta');
+  function open(key){
+    const b=BRANDS[key];if(!b)return;
+    elName.textContent=b.name;
+    elTag.textContent=b.tag;
+    elDesc.textContent=b.desc;
+    elFeats.innerHTML='';
+    b.feats.forEach(f=>{const li=document.createElement('li');li.textContent=f;elFeats.appendChild(li)});
+    elCta.href=b.url;elCta.textContent=b.cta+' ↗';
+    modal.style.setProperty('--modal-color',b.color);
+    modal.style.setProperty('--modal-glow',b.glow);
+    bd.classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function close(){
+    bd.classList.remove('open');
+    document.body.style.overflow='';
+  }
+  document.querySelectorAll('[data-brand]').forEach(el=>{
+    el.addEventListener('click',e=>{e.preventDefault();open(el.dataset.brand)});
+  });
+  document.getElementById('modalClose').addEventListener('click',close);
+  bd.addEventListener('click',e=>{if(e.target===bd)close()});
+  addEventListener('keydown',e=>{if(e.key==='Escape')close()});
 })();
 
 /* ───────── nav on scroll ───────── */
