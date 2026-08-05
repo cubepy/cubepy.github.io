@@ -44,7 +44,10 @@
   --en:"Space Grotesk","SF Pro Display",system-ui,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+/* Reserve the scrollbar gutter permanently. Without it, hiding overflow to
+   open the brand popup removes the scrollbar, the page widens by its width,
+   and every pinned section's measured offset goes stale. */
+html{scroll-behavior:smooth;scrollbar-gutter:stable}
 body{
   background:var(--bg);
   color:var(--white);
@@ -1194,6 +1197,15 @@ function loadThree(){
     gsap.to(v,{y:-26,ease:'none',
       scrollTrigger:{trigger:v,start:'top bottom',end:'bottom top',scrub:1.2}});
   });
+
+  /* Pin offsets are measured once, up front. Anything that reflows the page
+     afterwards — above all the webfont swapping in, which changes every
+     text block's height — leaves them stale, so sections start pinning at
+     the wrong scroll position and overlap the previous one. Recompute after
+     each late layout shift. */
+  const refresh=()=>ScrollTrigger.refresh();
+  addEventListener('load',refresh);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(refresh);
 })();
 /* mark elements hidden pre-animation */
 (function(){
@@ -1351,11 +1363,24 @@ function loadThree(){
     modal.style.setProperty('--modal-color',b.color);
     modal.style.setProperty('--modal-glow',b.glow);
     bd.classList.add('open');
-    document.body.style.overflow='hidden';
+    lockScroll();
   }
   function close(){
     bd.classList.remove('open');
+    unlockScroll();
+  }
+  /* Belt and braces for browsers without scrollbar-gutter: measure the width
+     the page actually gains when the scrollbar goes away and pad it back, so
+     locking the background never reflows the layout underneath. */
+  function lockScroll(){
+    const before=document.documentElement.clientWidth;
+    document.body.style.overflow='hidden';
+    const gained=document.documentElement.clientWidth-before;
+    if(gained>0)document.body.style.paddingInlineEnd=gained+'px';
+  }
+  function unlockScroll(){
     document.body.style.overflow='';
+    document.body.style.paddingInlineEnd='';
   }
   document.querySelectorAll('[data-brand]').forEach(el=>{
     el.addEventListener('click',e=>{e.preventDefault();open(el.dataset.brand)});
