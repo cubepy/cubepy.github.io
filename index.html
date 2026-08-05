@@ -7,10 +7,30 @@
 <meta name="description" content="اکوسیستم Cube — اتصال، پرداخت، سرگرمی، بازار دیجیتال و ساخت آینده. CubeVPN، CubePay، CubeGift، Cubely و CubeSaz در یک جهان.">
 <meta property="og:title" content="Cube Ecosystem">
 <meta property="og:description" content="فراتر از یک سرویس، یک اکوسیستم دیجیتال.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/vazirmatn-arabic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* self-hosted variable fonts — no external requests */
+@font-face{
+  font-family:'Vazirmatn';font-style:normal;font-weight:300 900;font-display:swap;
+  src:url('assets/fonts/vazirmatn-arabic.woff2') format('woff2');
+  unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC;
+}
+@font-face{
+  font-family:'Vazirmatn';font-style:normal;font-weight:300 900;font-display:swap;
+  src:url('assets/fonts/vazirmatn-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'Space Grotesk';font-style:normal;font-weight:400 700;font-display:swap;
+  src:url('assets/fonts/spacegrotesk-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'Space Grotesk';font-style:normal;font-weight:400 700;font-display:swap;
+  src:url('assets/fonts/spacegrotesk-latin-ext.woff2') format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
 :root{
   --bg:#050505;
   --blue:#0066FF;
@@ -777,7 +797,6 @@ footer{
   </div>
 </div>
 
-<script src="assets/vendor/three.min.js"></script>
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script>
@@ -793,7 +812,7 @@ addEventListener('mousemove',e=>{
 
 /* ───────── WebGL support check ───────── */
 const hasWebGL=(()=>{try{const c=document.createElement('canvas');
-  return !!(window.THREE&&window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl')));
+  return !!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl')));
 }catch(e){return false}})();
 if(!hasWebGL)document.documentElement.classList.add('no-webgl');
 
@@ -820,7 +839,7 @@ function makeEnvMap(renderer){
 }
 
 /* ───────── BACKGROUND: shader waves + 3D star particles ───────── */
-if(hasWebGL)(function(){
+function initBackground(){
   const canvas=document.getElementById('bg3d');
   const renderer=new THREE.WebGLRenderer({canvas,antialias:false});
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));
@@ -916,10 +935,10 @@ if(hasWebGL)(function(){
     renderer.render(starScene,cam);
     requestAnimationFrame(frame);
   })();
-})();
+}
 
 /* ───────── HERO: glass cube, lights, reflections, orbiting particles ───────── */
-if(hasWebGL)(function(){
+function initHeroCube(){
   const holder=document.getElementById('heroScene');
   const canvas=document.getElementById('cubeCanvas');
   const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
@@ -1040,17 +1059,34 @@ if(hasWebGL)(function(){
     renderer.render(scene,cam);
     requestAnimationFrame(frame);
   })();
-})();
+}
+
+/* ───────── load Three.js off the critical path ─────────
+   The 3D scenes are decorative, so three.js is fetched after the page is
+   interactive instead of blocking first paint or the preloader. */
+let threeRequested=false;
+function loadThree(){
+  if(!hasWebGL||threeRequested)return;
+  threeRequested=true;
+  const s=document.createElement('script');
+  s.src='assets/vendor/three.min.js';
+  s.onload=()=>{
+    try{initBackground();initHeroCube()}
+    catch(e){document.documentElement.classList.add('no-webgl')}
+  };
+  s.onerror=()=>document.documentElement.classList.add('no-webgl');
+  document.body.appendChild(s);
+}
 
 /* ───────── GSAP: preloader, reveals, Apple-style pinned sections ───────── */
 (function(){
   if(!window.gsap){document.documentElement.classList.remove('js');
-    document.getElementById('loader').style.display='none';return}
+    document.getElementById('loader').style.display='none';loadThree();return}
   gsap.registerPlugin(ScrollTrigger);
 
   /* preloader */
   const loader=document.getElementById('loader'),bar=document.getElementById('loaderBar');
-  const barTween=gsap.to(bar,{width:'92%',duration:1.4,ease:'power2.out'});
+  const barTween=gsap.to(bar,{width:'92%',duration:.8,ease:'power2.out'});
   let heroPlayed=false;
   function heroIntro(){
     if(heroPlayed)return;heroPlayed=true;
@@ -1063,13 +1099,15 @@ if(hasWebGL)(function(){
   function hideLoader(){
     if(loaderHidden)return;loaderHidden=true;
     barTween.kill();
-    gsap.to(bar,{width:'100%',duration:.25,ease:'power1.in'});
-    gsap.to(loader,{autoAlpha:0,duration:.7,delay:.35,ease:'power2.inOut',
+    gsap.to(bar,{width:'100%',duration:.2,ease:'power1.in'});
+    gsap.to(loader,{autoAlpha:0,duration:.5,delay:.15,ease:'power2.inOut',
       onComplete:()=>{loader.remove();heroIntro()}});
   }
-  if(document.readyState==='complete')setTimeout(hideLoader,900);
-  else addEventListener('load',()=>setTimeout(hideLoader,600));
-  setTimeout(hideLoader,4000); /* hard cap */
+  /* The DOM is all we need to reveal the page — three.js streams in after. */
+  function ready(){hideLoader();loadThree()}
+  if(document.readyState!=='loading')setTimeout(ready,260);
+  else addEventListener('DOMContentLoaded',()=>setTimeout(ready,200));
+  setTimeout(ready,3000); /* hard cap */
 
   if(REDUCED){
     gsap.set('.reveal,.anim,.anim-vis,.sat,#heroScene',{clearProps:'all',opacity:1});
@@ -1077,8 +1115,10 @@ if(hasWebGL)(function(){
     return;
   }
 
-  /* generic scroll reveals (non-product sections) */
-  gsap.utils.toArray('section:not(.product) .reveal:not(#heroCopy .reveal)').forEach(el=>{
+  /* generic scroll reveals (non-product sections).
+     The hero is excluded entirely — heroIntro() owns its entrance, and a
+     second opacity tween here would fight the hero's scrub-out. */
+  gsap.utils.toArray('section:not(.product):not(#hero) .reveal').forEach(el=>{
     gsap.fromTo(el,{y:48,opacity:0},{
       y:0,opacity:1,duration:1.05,ease:'power3.out',
       scrollTrigger:{trigger:el,start:'top 86%'}
