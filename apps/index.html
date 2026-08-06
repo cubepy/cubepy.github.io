@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اپلیکیشن‌ها — Cube Ecosystem</title>
+<meta name="description" content="دانلود اپلیکیشن‌ها و ابزارهای اختصاصی اکوسیستم Cube — همیشه آخرین نسخه.">
+<meta property="og:title" content="اپلیکیشن‌های Cube">
+<meta property="og:description" content="دانلود اپلیکیشن‌ها و ابزارهای اختصاصی اکوسیستم Cube — همیشه آخرین نسخه.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Crect width='24' height='24' rx='5' fill='%23050505'/%3E%3Cpath d='M12 3.2 19.6 7.4v9.2L12 20.8 4.4 16.6V7.4L12 3.2Z' stroke='%230066FF' stroke-width='1.4'/%3E%3Cpath d='M12 3.2v8.6m0 0 7.6-4.4M12 11.8 4.4 7.4M12 11.8v9' stroke='%237C3AED' stroke-width='1.1'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/vazirmatn-arabic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Vazirmatn';font-style:normal;font-weight:300 900;font-display:swap;
+  src:url('../assets/fonts/vazirmatn-arabic.woff2') format('woff2');
+  unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC;}
+@font-face{font-family:'Vazirmatn';font-style:normal;font-weight:300 900;font-display:swap;
+  src:url('../assets/fonts/vazirmatn-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:400 700;font-display:swap;
+  src:url('../assets/fonts/spacegrotesk-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+:root{
+  --bg:#050505;--blue:#0066FF;--purple:#7C3AED;--white:#FFFFFF;
+  --glass:rgba(255,255,255,0.08);--glass-border:rgba(255,255,255,0.12);
+  --muted:rgba(255,255,255,0.55);
+  --fa:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;
+  --en:"Space Grotesk","SF Pro Display",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-gutter:stable}
+body{background:var(--bg);color:var(--white);font-family:var(--fa);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+::selection{background:rgba(0,102,255,.4)}
+a{color:inherit;text-decoration:none}
+.en{font-family:var(--en);direction:ltr}
+
+/* background: same palette as the landing page, without the WebGL cost */
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.glowbg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 25% 15%,rgba(0,102,255,.13),transparent 55%),
+             radial-gradient(ellipse at 80% 70%,rgba(124,58,237,.13),transparent 55%);}
+.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 30%,transparent 40%,rgba(5,5,5,.6) 100%)}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:18px clamp(20px,5vw,64px);border-bottom:1px solid transparent;
+  transition:background .4s,backdrop-filter .4s,border-color .4s}
+nav.scrolled{background:rgba(5,5,5,.6);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom-color:rgba(255,255,255,.06)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--en);font-weight:700;letter-spacing:.12em;font-size:15px}
+.nav-logo svg{width:22px;height:22px;flex:none}
+.nav-links{display:flex;gap:26px;font-size:13.5px;color:var(--muted)}
+.nav-links a{position:relative;transition:color .25s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-links a.active::after{content:"";position:absolute;left:50%;bottom:-8px;width:18px;height:2px;
+  border-radius:2px;transform:translateX(-50%);background:linear-gradient(90deg,var(--blue),var(--purple));
+  box-shadow:0 0 10px rgba(0,102,255,.75)}
+@media(max-width:640px){.nav-links{gap:16px;font-size:12.5px}}
+
+main{position:relative;z-index:2;max-width:1000px;margin:0 auto;padding:150px clamp(20px,5vw,48px) 90px}
+.kicker{font-family:var(--en);font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;text-align:center}
+h1{font-family:var(--en);font-size:clamp(34px,5.5vw,60px);font-weight:700;line-height:1.1;text-align:center;
+  background:linear-gradient(120deg,#fff 35%,#8ab4ff 65%,var(--purple));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{color:var(--muted);font-size:clamp(15px,1.7vw,17.5px);line-height:2.1;font-weight:300;text-align:center;margin-top:18px}
+.always-latest{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:22px;
+  font-size:13px;color:rgba(255,255,255,.72)}
+.always-latest i{width:7px;height:7px;border-radius:50%;background:#28d17c;box-shadow:0 0 10px #28d17c;flex:none;
+  animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.grid{display:grid;gap:22px;margin-top:56px}
+.card{position:relative;border-radius:24px;padding:28px;overflow:hidden;
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+  border:1px solid var(--glass-border);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .35s}
+.card:hover{transform:translateY(-4px);border-color:rgba(0,140,255,.4);box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 40px rgba(0,102,255,.12)}
+.card::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 85% 0%,var(--tint,rgba(0,102,255,.16)),transparent 55%)}
+.card-top{position:relative;display:flex;align-items:flex-start;gap:18px}
+.app-icon{width:60px;height:60px;border-radius:17px;flex:none;display:flex;align-items:center;justify-content:center;
+  font-size:27px;background:linear-gradient(140deg,rgba(0,102,255,.28),rgba(124,58,237,.28));
+  border:1px solid rgba(255,255,255,.16);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.app-head{flex:1;min-width:0}
+.app-name{font-family:var(--en);font-size:22px;font-weight:700;letter-spacing:.01em}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.badge{font-size:11.5px;padding:4px 11px;border-radius:999px;color:rgba(255,255,255,.75);
+  background:var(--glass);border:1px solid var(--glass-border)}
+.badge.v{font-family:var(--en);color:#9db9ff;border-color:rgba(157,185,255,.3)}
+.app-desc{position:relative;color:var(--muted);font-size:14.5px;line-height:2.05;font-weight:300;margin-top:18px}
+.feats{position:relative;list-style:none;margin-top:16px;display:grid;gap:9px}
+.feats li{display:flex;align-items:center;gap:9px;font-size:13.5px;color:rgba(255,255,255,.76)}
+.feats li::before{content:"";width:6px;height:6px;border-radius:2px;flex:none;
+  background:var(--dot,var(--blue));box-shadow:0 0 8px var(--dot,var(--blue))}
+.actions{position:relative;display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:26px}
+.btn-dl{display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:14px;
+  font-family:var(--en);font-size:14.5px;font-weight:500;letter-spacing:.02em;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  box-shadow:0 0 26px rgba(0,102,255,.3),inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .3s,box-shadow .3s}
+.btn-dl:hover{transform:translateY(-2px);box-shadow:0 8px 34px rgba(124,58,237,.4),inset 0 1px 0 rgba(255,255,255,.22)}
+.btn-sec{padding:14px 20px;border-radius:14px;font-size:13.5px;color:var(--muted);
+  background:var(--glass);border:1px solid var(--glass-border);transition:color .3s,border-color .3s}
+.btn-sec:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+.meta{position:relative;display:flex;flex-wrap:wrap;gap:18px;margin-top:20px;padding-top:18px;
+  border-top:1px solid rgba(255,255,255,.07);font-size:12.5px;color:rgba(255,255,255,.45)}
+.meta b{font-weight:400;color:rgba(255,255,255,.7)}
+.hash{font-family:var(--en);direction:ltr;word-break:break-all;font-size:11px;line-height:1.7;
+  color:rgba(255,255,255,.35);margin-top:12px;position:relative}
+.note{margin-top:46px;padding:20px 22px;border-radius:18px;font-size:13.5px;line-height:2.05;
+  color:var(--muted);background:rgba(255,255,255,.035);border:1px solid var(--glass-border)}
+.note b{color:#fff;font-weight:700}
+
+footer{position:relative;z-index:2;background:#000;border-top:1px solid rgba(255,255,255,.06);
+  padding:60px 24px 40px;text-align:center}
+.footer-links{display:flex;gap:clamp(14px,4vw,34px);justify-content:center;flex-wrap:wrap;
+  font-family:var(--en);font-size:13.5px;color:var(--muted)}
+.footer-links a{transition:color .3s;display:inline-flex;align-items:center;gap:7px}
+.footer-links a:hover{color:#fff}
+.footer-links i{width:6px;height:6px;border-radius:2px;background:var(--blue);box-shadow:0 0 8px var(--blue)}
+.footer-links a:nth-child(even) i{background:var(--purple);box-shadow:0 0 8px var(--purple)}
+.footer-copy{margin-top:32px;font-size:12px;color:rgba(255,255,255,.25);font-family:var(--en);letter-spacing:.08em}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="glowbg"></div>
+<div class="vignette"></div>
+
+<nav id="nav">
+  <a class="nav-logo en" href="../">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" stroke="#0066FF" stroke-width="1.4"/><path d="M12 2v10m0 0 9-5m-9 5-9-5m9 5v10" stroke="#7C3AED" stroke-width="1" opacity=".8"/></svg>
+    CUBE
+  </a>
+  <div class="nav-links en">
+    <a href="../">Home</a>
+    <a href="./" class="active">Apps</a>
+  </div>
+</nav>
+
+<main>
+  <div class="kicker">DOWNLOADS</div>
+  <h1>Cube Apps</h1>
+  <p class="lede">اپلیکیشن‌ها و ابزارهای اختصاصی اکوسیستم Cube.</p>
+  <div class="always-latest"><i></i> این لینک‌ها همیشه به آخرین نسخه اشاره می‌کنند</div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="note">
+    <b>نکته درباره نصب اندروید:</b> چون این اپلیکیشن از گوگل‌پلی منتشر نمی‌شود، هنگام نصب ممکن است
+    اندروید هشدار «منبع ناشناس» نشان دهد. برای اطمینان از سالم بودن فایل، می‌توانید کد SHA-256
+    نمایش‌داده‌شده را با فایل دانلودشده مقایسه کنید — این کد از خود ریلیز گیت‌هاب خوانده می‌شود.
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://t.me/Cube_VPNN" target="_blank" rel="noopener"><i></i>CubeVPN</a>
+    <a href="https://t.me/Cubepy" target="_blank" rel="noopener"><i></i>CubePay</a>
+    <a href="https://cubegift.ir/" target="_blank" rel="noopener"><i></i>CubeGift</a>
+    <a href="https://cubely.ir/" target="_blank" rel="noopener"><i></i>Cubely</a>
+    <a href="https://t.me/CubeSaz" target="_blank" rel="noopener"><i></i>CubeSaz</a>
+  </div>
+  <div class="footer-copy">© Cube Ecosystem — Connect. Create. Evolve.</div>
+</footer>
+
+<script>
+/* The block below is regenerated by .github/workflows/update-app-releases.yml
+   from the GitHub Releases API, so version, size, date and checksum stay
+   current without touching this page by hand. Keep the markers intact. */
+/* APPS:START */
+const APPS=[
+  {
+    id:'cubevpn-android',
+    name:'CubeVPN for Android',
+    icon:'🛡️',
+    tint:'rgba(0,102,255,.18)',
+    dot:'#0066FF',
+    platform:'Android',
+    desc:'کلاینت VPN اندروید بر پایه Xray-core، ساخته‌شده برای عبور از محدودیت‌های اینترنت. متن‌باز و قابل بررسی.',
+    feats:['بر پایه موتور Xray-core','پشتیبانی از VLESS · VMess · Trojan · Shadowsocks','متن‌باز',
+           'این فایل نسخه ۶۴ بیتی است — مناسب تقریباً همه گوشی‌های امروزی'],
+    url:'https://github.com/cubepy/CubeVPN/releases/download/v1.3.5/CubeVPN-v1.3.5-arm64-v8a-release.apk',
+    alt:{label:'نسخه ۳۲ بیتی و یونیورسال',url:'https://github.com/cubepy/CubeVPN/releases/latest'},
+    guide:'https://github.com/cubepy/CubeVPN',
+    guideLabel:'صفحه پروژه ↗',
+    version:'v1.3.5',
+    size:48167074,
+    updated:'2026-08-01',
+    sha256:'6b56fe28d2c48626d118fb3dd4edc9924671d8fa99a60f4c590d45a2a9939a59'
+  },
+  {
+    id:'cubewin',
+    name:'CubeWin for Windows',
+    icon:'🖥️',
+    tint:'rgba(124,58,237,.18)',
+    dot:'#7C3AED',
+    platform:'Windows x64',
+    desc:'اپلیکیشن دسکتاپ ویندوز با جعل SNI، مسیریابی هوشمند، کانفیگ بر اساس کشور و کنترل زنده پراکسی سیستم.',
+    feats:['جعل SNI و مسیریابی هوشمند','انتخاب کانفیگ بر اساس کشور','کنترل زنده پراکسی ویندوز','یکپارچه با Xray'],
+    url:'https://github.com/cubepy/CubeWin/releases/download/v1.5.3/CubeVPN-windows-x64.zip',
+    alt:{label:'همه نسخه‌ها',url:'https://github.com/cubepy/CubeWin/releases'},
+    guide:'https://github.com/cubepy/CubeWin',
+    guideLabel:'صفحه پروژه ↗',
+    version:'v1.5.3',
+    size:93738829,
+    updated:'2026-08-04',
+    sha256:'20adf6ff3e9f13e6b46836a9a261284533e3a52267eeb6f487ac168e786927dc'
+  },
+  {
+    id:'sms-forwarder',
+    name:'CubePay SMS Forwarder',
+    icon:'📲',
+    tint:'rgba(0,102,255,.18)',
+    dot:'#0066FF',
+    platform:'Android',
+    desc:'اپلیکیشن رسمی CubePay برای اندروید. پیامک‌های بانکی گوشی را می‌خواند و به درگاه می‌فرستد تا پرداخت‌های کارت‌به‌کارت به‌صورت خودکار تأیید شوند.',
+    feats:['تأیید خودکار پرداخت‌های کارت‌به‌کارت','اجرا در پس‌زمینه با مصرف کم','بدون نیاز به روت','نصب و راه‌اندازی چنددقیقه‌ای'],
+    url:'https://github.com/cubepy/cubepay-doc/releases/download/android-latest/CubePay.apk',
+    guide:'https://github.com/cubepy/cubepay-doc/blob/main/integrations/android-sms-forwarder-guide.md',
+    version:'v2.5.2',
+    size:3104114,
+    updated:'2026-08-06',
+    sha256:'9e4a1f73cfb2b1fa2bf43791c6e19dd8fc6eac6ae2063dbcb8e5b2addfeb3e4b'
+  },
+  {
+    id:'wordpress',
+    name:'CubePay for WordPress',
+    icon:'🧩',
+    tint:'rgba(124,58,237,.18)',
+    dot:'#7C3AED',
+    platform:'WordPress · WooCommerce',
+    desc:'افزونه رسمی CubePay برای ووکامرس. درگاه کارت‌به‌کارت، کریپتو و VIP را به فروشگاه وردپرسی شما اضافه می‌کند.',
+    feats:['پشتیبانی از کارت‌به‌کارت و کریپتو','سازگار با CubePay VIP','تأیید خودکار سفارش‌ها','نصب با آپلود ساده افزونه'],
+    url:'https://github.com/cubepy/cubepay-doc/releases/download/wp-v1.2.1/smspay-gateway.zip',
+    guide:'https://github.com/cubepy/cubepay-doc/blob/main/integrations/wordpress-plugin-guide.md',
+    version:'v1.2.1',
+    size:9912,
+    updated:'2026-08-05',
+    sha256:'e6a756c2c8a44187e863f86dd209958b6cb442b54a5c86a32eb591761e7744be'
+  }
+];
+/* APPS:END */
+
+(function(){
+  const fmtSize=b=>b>=1048576?(b/1048576).toFixed(1)+' مگابایت':Math.round(b/1024)+' کیلوبایت';
+  const fmtDate=iso=>{
+    try{return new Intl.DateTimeFormat('fa-IR',{year:'numeric',month:'long',day:'numeric'})
+      .format(new Date(iso+'T00:00:00Z'))}catch(e){return iso}
+  };
+  const grid=document.getElementById('grid');
+  for(const a of APPS){
+    const card=document.createElement('article');
+    card.className='card';
+    card.style.setProperty('--tint',a.tint);
+    card.style.setProperty('--dot',a.dot);
+    const feats=a.feats.map(f=>'<li>'+f+'</li>').join('');
+    card.innerHTML=
+      '<div class="card-top">'+
+        '<div class="app-icon">'+a.icon+'</div>'+
+        '<div class="app-head">'+
+          '<div class="app-name en">'+a.name+'</div>'+
+          '<div class="badges"><span class="badge">'+a.platform+'</span>'+
+            '<span class="badge v en">'+a.version+'</span></div>'+
+        '</div>'+
+      '</div>'+
+      '<p class="app-desc">'+a.desc+'</p>'+
+      '<ul class="feats">'+feats+'</ul>'+
+      '<div class="actions">'+
+        '<a class="btn-dl en" href="'+a.url+'">Download'+
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14m0 0 6-6m-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+        '</a>'+
+        '<a class="btn-sec" href="'+a.guide+'" target="_blank" rel="noopener">'+(a.guideLabel||'راهنمای نصب ↗')+'</a>'+
+        (a.alt?'<a class="btn-sec" href="'+a.alt.url+'" target="_blank" rel="noopener">'+a.alt.label+' ↗</a>':'')+
+      '</div>'+
+      '<div class="meta"><span>حجم: <b>'+fmtSize(a.size)+'</b></span>'+
+        '<span>آخرین به‌روزرسانی: <b>'+fmtDate(a.updated)+'</b></span></div>'+
+      (a.sha256?'<div class="hash">SHA-256: '+a.sha256+'</div>':'');
+    grid.appendChild(card);
+  }
+})();
+
+/* starfield — the landing page's look without pulling in three.js */
+(function(){
+  const c=document.getElementById('stars'),x=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){
+    W=c.width=innerWidth;H=c.height=innerHeight;
+    stars=Array.from({length:Math.min(150,Math.round(W/9))},()=>({
+      x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,
+      tw:Math.random()*Math.PI*2,sp:.02+Math.random()*.05
+    }));
+  }
+  resize();addEventListener('resize',resize,{passive:true});
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  (function frame(){
+    requestAnimationFrame(frame);
+    if(document.hidden)return;
+    x.clearRect(0,0,W,H);
+    for(const s of stars){
+      if(!reduced)s.tw+=s.sp;
+      x.globalAlpha=.25+Math.abs(Math.sin(s.tw))*.55;
+      x.fillStyle='#fff';
+      x.beginPath();x.arc(s.x,s.y,s.r,0,7);x.fill();
+    }
+  })();
+})();
+
+(function(){
+  const nav=document.getElementById('nav');
+  addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+})();
+</script>
+</body>
+</html>
