@@ -15,10 +15,12 @@ Three ways of tracking "latest" are supported per app:
   (neither)   plain newest release in the repo
 
 The asset is matched by exact name, or by `asset_re` when the filename
-carries the version and therefore changes every release.
+carries the version and therefore changes every release. Set
+`allow_prerelease` for products still shipping betas.
 
-Nothing is written unless every app resolved, so a transient API failure
-cannot blank out the page.
+An app that fails to resolve keeps whatever the page already says rather
+than being blanked, and the others still update; the run then exits
+non-zero so the failure is visible in Actions instead of going quiet.
 """
 import json
 import os
@@ -32,6 +34,17 @@ PAGE = os.path.join(os.path.dirname(os.path.dirname(
 
 # app id -> where its release lives and which asset to link
 SOURCES = {
+    'cubepilot-android': {
+        'repo': 'cubepy/CubePilot',
+        # every CubePilot build so far is tagged as a pre-release
+        'allow_prerelease': True,
+        'asset_re': r'^CubePilot-v[\d.]+-android\.apk$',
+    },
+    'cubepilot-windows': {
+        'repo': 'cubepy/CubePilot',
+        'allow_prerelease': True,
+        'asset_re': r'^CubePilot-v[\d.]+-windows-x64\.zip$',
+    },
     'cubevpn-android': {
         'repo': 'cubepy/CubeVPN',
         # the 64-bit build: what nearly every current phone wants, and a
@@ -89,8 +102,10 @@ def resolve(app_id, spec):
         rel = api(repo, '/releases/tags/' + spec['fixed_tag'])
     else:
         prefix = spec.get('tag_prefix', '')
+        allow_pre = spec.get('allow_prerelease', False)
         matching = [r for r in api(repo, '/releases?per_page=100')
-                    if not r.get('draft') and not r.get('prerelease')
+                    if not r.get('draft')
+                    and (allow_pre or not r.get('prerelease'))
                     and (r.get('tag_name') or '').startswith(prefix)]
         if not matching:
             raise LookupError(f'{app_id}: no release in {repo} matches '
@@ -145,14 +160,18 @@ def main():
         sys.exit('APPS markers missing from apps/index.html')
 
     block = html[a:b]
-    try:
-        for app_id, spec in SOURCES.items():
+    failures = []
+    for app_id, spec in SOURCES.items():
+        try:
             facts = resolve(app_id, spec)
             block = patch(block, app_id, facts)
             print(f'{app_id}: {facts["version"]} '
                   f'({facts["size"]:,} bytes, {facts["updated"]})')
-    except (urllib.error.URLError, LookupError, KeyError) as exc:
-        sys.exit(f'refresh aborted, page left untouched: {exc}')
+        except (urllib.error.URLError, LookupError, KeyError, OSError) as exc:
+            # Leave this app's current values in place; a stale entry beats a
+            # blank one, and the rest of the page can still move forward.
+            failures.append(f'{app_id}: {exc}')
+            print(f'{app_id}: SKIPPED — {exc}')
 
     updated = html[:a] + block + html[b:]
     if updated != html:
@@ -160,6 +179,9 @@ def main():
         print('apps/index.html updated')
     else:
         print('no changes')
+
+    if failures:
+        sys.exit('could not refresh: ' + '; '.join(failures))
 
 
 if __name__ == '__main__':
