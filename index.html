@@ -511,6 +511,43 @@ h1.hero-title{
 }
 .modal-cta:hover{transform:translateY(-2px);box-shadow:0 8px 34px rgba(124,58,237,.4),inset 0 1px 0 rgba(255,255,255,.22)}
 
+/* ---------- support ---------- */
+#support{padding:40px 0 140px}
+.support-card{
+  position:relative;max-width:820px;margin:0 auto;overflow:hidden;
+  border-radius:28px;padding:clamp(30px,4vw,50px);text-align:center;
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.support-card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 82% 0%,rgba(0,102,255,.16),transparent 55%),
+             radial-gradient(circle at 18% 100%,rgba(124,58,237,.14),transparent 55%);
+}
+.support-card>*{position:relative}
+.support-kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--en);font-size:11.5px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--muted);padding:7px 15px;border-radius:999px;
+  background:var(--glass);border:1px solid var(--glass-border);
+}
+.support-kicker i{width:6px;height:6px;border-radius:50%;background:#22D3EE;box-shadow:0 0 10px #22D3EE;animation:pulse 2.4s infinite}
+.support-title{font-size:clamp(21px,3vw,31px);font-weight:900;line-height:1.75;margin-top:20px}
+.support-title .g{background:linear-gradient(100deg,#5aa0ff,#a273ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.support-body{color:var(--muted);font-size:clamp(14px,1.6vw,16px);font-weight:300;line-height:2.15;margin-top:18px;max-width:600px;margin-inline:auto}
+.support-cta{
+  display:inline-flex;align-items:center;gap:11px;margin-top:30px;
+  padding:15px 32px;border-radius:15px;
+  font-family:var(--en);font-size:16px;font-weight:700;letter-spacing:.02em;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  box-shadow:0 0 30px rgba(0,102,255,.32),inset 0 1px 0 rgba(255,255,255,.24);
+  transition:transform .3s,box-shadow .3s;
+}
+.support-cta:hover{transform:translateY(-3px);box-shadow:0 10px 38px rgba(124,58,237,.42),inset 0 1px 0 rgba(255,255,255,.24)}
+.support-cta svg{width:18px;height:18px;flex:none}
+.support-note{margin-top:20px;font-size:13px;color:rgba(255,255,255,.4);line-height:2}
+
 /* ---------- footer ---------- */
 footer{
   position:relative;z-index:2;background:#000;
@@ -564,6 +601,7 @@ footer{
     <a href="#cubely">Cubely</a>
     <a href="#saz">CubeSaz</a>
     <a href="apps/">Apps</a>
+    <a href="#support">Support</a>
   </div>
 </nav>
 
@@ -785,6 +823,26 @@ footer{
   </div>
 </section>
 
+<!-- ═══════════ SUPPORT ═══════════ -->
+<section id="support">
+  <div class="wrap">
+    <div class="support-card reveal">
+      <span class="support-kicker en"><i></i>SUPPORT CUBE</span>
+      <h2 class="support-title">هزینه سرویس را گرفتیم،<br><span class="g">وقتش را نه.</span></h2>
+      <p class="support-body">
+        برای خیلی از شما درگاه را روی سیستم خودتان پیاده کردیم و تا اولین تراکنش موفق کنارتان ماندیم —
+        بدون اینکه جزو قرارمان باشد. CubePilot را هم کامل رایگان منتشر کردیم.
+        اگر جایی از کارتان راه افتاد و دوست داشتید، می‌توانید حمایت کنید.
+      </p>
+      <a class="support-cta" href="https://donofa.com/Cube" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.7-9.5-9A5.2 5.2 0 0 1 12 6.5 5.2 5.2 0 0 1 21.5 12c-2 4.3-9.5 9-9.5 9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span class="en">donofa.com/Cube</span>
+      </a>
+      <p class="support-note">هر مبلغی، حتی کوچک. و اگر شرایطش نیست، هیچ اشکالی ندارد.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer>
   <svg class="footer-cube" viewBox="0 0 24 24" fill="none">
@@ -800,6 +858,7 @@ footer{
     <a href="https://cubely.ir/" target="_blank" rel="noopener" data-brand="cubely"><i></i>Cubely</a>
     <a href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-brand="saz"><i></i>CubeSaz</a>
     <a href="apps/"><i></i>Apps</a>
+    <a href="https://donofa.com/Cube" target="_blank" rel="noopener"><i></i>Support</a>
   </div>
   <div class="footer-copy">© Cube Ecosystem — Connect. Create. Evolve.</div>
 </footer>
@@ -1406,9 +1465,16 @@ function loadThree(){
    otherwise keep winning over the section that has actually come into view,
    which stuck the highlight one item behind. */
 (function(){
+  /* Only in-page anchors describe a section to track. The nav also carries
+     links to other pages, and passing one of those to querySelector throws
+     and takes the whole highlight with it. */
   const items=[...document.querySelectorAll('.nav-links a')]
-    .map(a=>({a,sec:document.querySelector(a.getAttribute('href'))}))
-    .filter(o=>o.sec);
+    .map(a=>{
+      const href=a.getAttribute('href')||'';
+      return href.startsWith('#')&&href.length>1
+        ? {a,sec:document.querySelector(href)} : null;
+    })
+    .filter(o=>o&&o.sec);
   if(!items.length)return;
 
   let current=null;
