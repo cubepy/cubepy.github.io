@@ -20,14 +20,6 @@ env:
   BUCKET: cubesystem
   ENDPOINT: https://s3.ir-thr-at1.arvanstorage.ir
   AWS_DEFAULT_REGION: ir-thr-at1
-  # Everything that is repo scaffolding rather than site content.
-  EXCLUDES: >-
-    --exclude ".git/*"
-    --exclude ".github/*"
-    --exclude "tools/*"
-    --exclude "assets/fonts/src/*"
-    --exclude "README.md"
-    --exclude "CNAME"
 
 jobs:
   deploy:
@@ -68,29 +60,47 @@ jobs:
         run: |
           set -euo pipefail
           s3="aws s3 --endpoint-url $ENDPOINT"
+
+          # Repo scaffolding rather than site content. An array, not a string:
+          # word-splitting an unquoted variable does not strip the quotes
+          # inside it, so the patterns would reach the CLI with literal quote
+          # characters and silently match nothing. These go LAST on every
+          # command — filters are applied in order and the final match wins,
+          # so an --include earlier in the line would otherwise pull them
+          # straight back in.
+          skip=(
+            --exclude ".git/*"
+            --exclude ".github/*"
+            --exclude "tools/*"
+            --exclude "assets/fonts/src/*"
+            --exclude "README.md"
+            --exclude ".nojekyll"
+            --exclude "CNAME"
+          )
+
           # Every object needs public-read of its own: marking the bucket
           # public does not grant it, and the static-site endpoint will not
           # serve what it cannot read anonymously.
 
           # HTML last-write-wins on a short cache so edits surface quickly;
           # the CDN in front is what actually absorbs the traffic.
-          $s3 sync . "s3://$BUCKET" $EXCLUDES \
-            --exclude "*" --include "*.html" \
+          $s3 sync . "s3://$BUCKET" \
+            --exclude "*" --include "*.html" "${skip[@]}" \
             --content-type "text/html; charset=utf-8" \
             --cache-control "public, max-age=300" \
             --acl public-read --no-progress
 
           # Scripts. Named without a content hash, so they cannot be immutable.
-          $s3 sync . "s3://$BUCKET" $EXCLUDES \
-            --exclude "*" --include "*.js" \
+          $s3 sync . "s3://$BUCKET" \
+            --exclude "*" --include "*.js" "${skip[@]}" \
             --content-type "application/javascript; charset=utf-8" \
             --cache-control "public, max-age=86400" \
             --acl public-read --no-progress
 
           # Fonts: the CLI guesses these as octet-stream, which stops some
           # browsers from using them at all.
-          $s3 sync . "s3://$BUCKET" $EXCLUDES \
-            --exclude "*" --include "*.woff2" \
+          $s3 sync . "s3://$BUCKET" \
+            --exclude "*" --include "*.woff2" "${skip[@]}" \
             --content-type "font/woff2" \
             --cache-control "public, max-age=604800" \
             --acl public-read --no-progress
@@ -99,8 +109,8 @@ jobs:
           # from the repo also disappear from the bucket. This pass is last:
           # --delete prunes whatever the earlier passes did not upload, so it
           # has to run once every current file is already in place.
-          $s3 sync . "s3://$BUCKET" $EXCLUDES \
-            --exclude "*.html" --exclude "*.js" --exclude "*.woff2" \
+          $s3 sync . "s3://$BUCKET" \
+            --exclude "*.html" --exclude "*.js" --exclude "*.woff2" "${skip[@]}" \
             --cache-control "public, max-age=86400" \
             --delete --acl public-read --no-progress
 
