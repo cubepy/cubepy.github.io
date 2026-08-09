@@ -40,6 +40,20 @@ jobs:
         with:
           ref: main
 
+      # cubesaz-site is its own repo and used to be served from GitHub Pages,
+      # which Iran blocks — so the address in the CubeSaz bot opened for
+      # nobody there. Mirroring it under the same domain fixes that without
+      # keeping a second copy of the page in this repo. It is pulled in before
+      # the sync passes below so it gets the same headers and is covered by
+      # --delete like everything else.
+      - name: Pull in the CubeSaz landing page
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/cubepy/cubesaz-site .cubesaz
+          rm -rf .cubesaz/.git .cubesaz/README.md .cubesaz/OFL.txt
+          rm -rf cubesaz-site && mv .cubesaz cubesaz-site
+          ls -la cubesaz-site
+
       - name: Install AWS CLI
         run: |
           if ! command -v aws >/dev/null; then
