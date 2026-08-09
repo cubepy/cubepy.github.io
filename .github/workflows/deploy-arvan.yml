@@ -31,6 +31,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          # Nothing here pushes, and a checkout that keeps credentials leaves
+          # the run's token sitting in .git/config for anything in the job to
+          # pick up.
+          persist-credentials: false
 
       # cubesaz-site is its own repo and used to be served from GitHub Pages,
       # which Iran blocks — so the address in the CubeSaz bot opened for
@@ -113,6 +117,27 @@ jobs:
             --exclude "*.html" --exclude "*.js" --exclude "*.woff2" "${skip[@]}" \
             --cache-control "public, max-age=86400" \
             --delete --acl public-read --no-progress
+
+      # --delete cannot clear these: an --exclude filter applies to the
+      # destination as well, so anything the excludes now skip is also skipped
+      # when working out what to remove. While the excludes were broken this
+      # bucket collected .git, .github and the untrimmed fonts, and they would
+      # sit there forever. Explicit, idempotent, and scoped to paths that are
+      # never site content.
+      - name: Remove what should never have been uploaded
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARVAN_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARVAN_SECRET_KEY }}
+        run: |
+          set -euo pipefail
+          for prefix in .git/ .github/ tools/ assets/fonts/src/; do
+            aws s3 rm "s3://$BUCKET/$prefix" --recursive \
+              --endpoint-url "$ENDPOINT" --only-show-errors
+          done
+          for key in README.md .nojekyll CNAME; do
+            aws s3 rm "s3://$BUCKET/$key" \
+              --endpoint-url "$ENDPOINT" --only-show-errors
+          done
 
       - name: Show what is live
         env:
