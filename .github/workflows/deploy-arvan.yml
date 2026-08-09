@@ -45,6 +45,9 @@ jobs:
         run: |
           set -euo pipefail
           s3="aws s3 --endpoint-url $ENDPOINT"
+          # Every object needs public-read of its own: marking the bucket
+          # public does not grant it, and the static-site endpoint will not
+          # serve what it cannot read anonymously.
 
           # HTML last-write-wins on a short cache so edits surface quickly;
           # the CDN in front is what actually absorbs the traffic.
@@ -52,14 +55,14 @@ jobs:
             --exclude "*" --include "*.html" \
             --content-type "text/html; charset=utf-8" \
             --cache-control "public, max-age=300" \
-            --no-progress
+            --acl public-read --no-progress
 
           # Scripts. Named without a content hash, so they cannot be immutable.
           $s3 sync . "s3://$BUCKET" $EXCLUDES \
             --exclude "*" --include "*.js" \
             --content-type "application/javascript; charset=utf-8" \
             --cache-control "public, max-age=86400" \
-            --no-progress
+            --acl public-read --no-progress
 
           # Fonts: the CLI guesses these as octet-stream, which stops some
           # browsers from using them at all.
@@ -67,7 +70,7 @@ jobs:
             --exclude "*" --include "*.woff2" \
             --content-type "font/woff2" \
             --cache-control "public, max-age=604800" \
-            --no-progress
+            --acl public-read --no-progress
 
           # Anything else (images and so on), with --delete so files removed
           # from the repo also disappear from the bucket. This pass is last:
@@ -76,7 +79,7 @@ jobs:
           $s3 sync . "s3://$BUCKET" $EXCLUDES \
             --exclude "*.html" --exclude "*.js" --exclude "*.woff2" \
             --cache-control "public, max-age=86400" \
-            --delete --no-progress
+            --delete --acl public-read --no-progress
 
       - name: Show what is live
         env:
