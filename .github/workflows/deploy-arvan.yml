@@ -6,6 +6,10 @@ name: Deploy to ArvanCloud
 on:
   push:
     branches: [main]
+  # Called by the release-refresh workflow. Its commit is pushed with the
+  # default GITHUB_TOKEN, and GitHub deliberately does not fire workflows on
+  # those pushes — so the refresh has to ask for the deploy itself.
+  workflow_call:
   workflow_dispatch:
 
 concurrency:
@@ -29,7 +33,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # Always the tip of main, never the sha the run started from: a
+      # workflow_call run inherits the caller's context, and the refresh
+      # workflow's caller sha predates the commit it just pushed.
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Install AWS CLI
         run: |

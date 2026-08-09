@@ -2,10 +2,11 @@ name: Refresh app release data
 
 # Keeps the version, size, date, checksum and download URL on /apps in sync
 # with the GitHub Releases they come from, so the page never advertises a
-# stale build. Runs daily and on demand.
+# stale build. Every six hours, so a release published in the evening is on
+# the page the same night rather than the next morning.
 on:
   schedule:
-    - cron: '17 4 * * *'
+    - cron: '17 */6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -14,6 +15,8 @@ permissions:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
 
@@ -23,9 +26,11 @@ jobs:
         run: python3 .github/scripts/update_app_releases.py
 
       - name: Commit if anything moved
+        id: commit
         run: |
           if git diff --quiet -- apps/index.html; then
             echo "release data already current"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name  "github-actions[bot]"
@@ -33,3 +38,13 @@ jobs:
           git add apps/index.html
           git commit -m "chore: refresh app release data on /apps"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+  # The commit above cannot trigger the deploy workflow on its own — pushes
+  # made with GITHUB_TOKEN never fire another workflow — so a refreshed page
+  # would sit in the repo and never reach the bucket. Call the deploy here.
+  deploy:
+    needs: refresh
+    if: needs.refresh.outputs.changed == 'true'
+    uses: ./.github/workflows/deploy-arvan.yml
+    secrets: inherit
