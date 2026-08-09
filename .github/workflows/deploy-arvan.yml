@@ -1,0 +1,85 @@
+name: Deploy to ArvanCloud
+
+# Publishes the site to the ArvanCloud object storage bucket that fronts
+# cubesystem.top. GitHub Pages is unreachable from inside Iran, so the origin
+# has to live there too — this keeps "push to main" as the way to ship.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-arvan
+  cancel-in-progress: true
+
+env:
+  BUCKET: cubesystem
+  ENDPOINT: https://s3.ir-thr-at1.arvanstorage.ir
+  AWS_DEFAULT_REGION: ir-thr-at1
+  # Everything that is repo scaffolding rather than site content.
+  EXCLUDES: >-
+    --exclude ".git/*"
+    --exclude ".github/*"
+    --exclude "tools/*"
+    --exclude "assets/fonts/src/*"
+    --exclude "README.md"
+    --exclude "CNAME"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install AWS CLI
+        run: |
+          if ! command -v aws >/dev/null; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq awscli
+          fi
+          aws --version
+
+      - name: Upload site
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARVAN_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARVAN_SECRET_KEY }}
+        run: |
+          set -euo pipefail
+          s3="aws s3 --endpoint-url $ENDPOINT"
+
+          # HTML last-write-wins on a short cache so edits surface quickly;
+          # the CDN in front is what actually absorbs the traffic.
+          $s3 sync . "s3://$BUCKET" $EXCLUDES \
+            --exclude "*" --include "*.html" \
+            --content-type "text/html; charset=utf-8" \
+            --cache-control "public, max-age=300" \
+            --no-progress
+
+          # Scripts. Named without a content hash, so they cannot be immutable.
+          $s3 sync . "s3://$BUCKET" $EXCLUDES \
+            --exclude "*" --include "*.js" \
+            --content-type "application/javascript; charset=utf-8" \
+            --cache-control "public, max-age=86400" \
+            --no-progress
+
+          # Fonts: the CLI guesses these as octet-stream, which stops some
+          # browsers from using them at all.
+          $s3 sync . "s3://$BUCKET" $EXCLUDES \
+            --exclude "*" --include "*.woff2" \
+            --content-type "font/woff2" \
+            --cache-control "public, max-age=604800" \
+            --no-progress
+
+          # Anything else (images and so on), with --delete so files removed
+          # from the repo also disappear from the bucket. This pass is last:
+          # --delete prunes whatever the earlier passes did not upload, so it
+          # has to run once every current file is already in place.
+          $s3 sync . "s3://$BUCKET" $EXCLUDES \
+            --exclude "*.html" --exclude "*.js" --exclude "*.woff2" \
+            --cache-control "public, max-age=86400" \
+            --delete --no-progress
+
+      - name: Show what is live
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ARVAN_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ARVAN_SECRET_KEY }}
+        run: aws s3 ls "s3://$BUCKET" --recursive --human-readable --endpoint-url "$ENDPOINT"

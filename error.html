@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صفحه پیدا نشد — Cube Ecosystem</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Crect width='24' height='24' rx='5' fill='%23050505'/%3E%3Cpath d='M12 3.2 19.6 7.4v9.2L12 20.8 4.4 16.6V7.4L12 3.2Z' stroke='%230066FF' stroke-width='1.4'/%3E%3Cpath d='M12 3.2v8.6m0 0 7.6-4.4M12 11.8 4.4 7.4M12 11.8v9' stroke='%237C3AED' stroke-width='1.1'/%3E%3C/svg%3E">
+<link rel="preload" href="/assets/fonts/vazirmatn-arabic.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Vazirmatn';font-style:normal;font-weight:300 900;font-display:swap;
+  src:url('/assets/fonts/vazirmatn-arabic.woff2') format('woff2');
+  unicode-range:U+0600-06FF,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC;}
+@font-face{font-family:'Vazirmatn';font-style:normal;font-weight:300 900;font-display:swap;
+  src:url('/assets/fonts/vazirmatn-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+2000-206F;}
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:400 700;font-display:swap;
+  src:url('/assets/fonts/spacegrotesk-latin.woff2') format('woff2');}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#0066FF;--purple:#7C3AED;--muted:rgba(255,255,255,.55);--glass:rgba(255,255,255,.08);--glass-border:rgba(255,255,255,.12)}
+body{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;padding:40px 24px;text-align:center;
+  font-family:'Vazirmatn',Tahoma,sans-serif;color:#fff;
+  background:
+    radial-gradient(ellipse 700px 500px at 25% 15%,rgba(0,102,255,.16),transparent 60%),
+    radial-gradient(ellipse 620px 480px at 78% 82%,rgba(124,58,237,.15),transparent 60%),
+    #050505;
+}
+.cube{width:96px;height:96px;margin-bottom:26px;filter:drop-shadow(0 0 26px rgba(0,102,255,.5))}
+.code{font-family:'Space Grotesk',sans-serif;direction:ltr;font-size:clamp(58px,11vw,92px);
+  font-weight:700;line-height:1;letter-spacing:.04em;
+  background:linear-gradient(120deg,#fff 30%,#8ab4ff 60%,var(--purple));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+h1{font-size:clamp(18px,2.6vw,24px);font-weight:900;margin-top:18px;line-height:1.9}
+p{color:var(--muted);font-size:15px;font-weight:300;line-height:2.1;margin-top:10px;max-width:420px}
+.links{display:flex;gap:13px;flex-wrap:wrap;justify-content:center;margin-top:32px}
+.btn{
+  padding:14px 28px;border-radius:14px;text-decoration:none;color:#fff;
+  font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:500;letter-spacing:.02em;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  box-shadow:0 0 26px rgba(0,102,255,.3),inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .3s,box-shadow .3s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 34px rgba(124,58,237,.4),inset 0 1px 0 rgba(255,255,255,.22)}
+.btn.ghost{background:var(--glass);border:1px solid var(--glass-border);box-shadow:none;
+  font-family:'Vazirmatn',Tahoma,sans-serif;color:var(--muted)}
+.btn.ghost:hover{color:#fff;border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+</style>
+</head>
+<body>
+  <svg class="cube" viewBox="0 0 24 24" fill="none">
+    <path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" stroke="#0066FF" stroke-width="1.2"/>
+    <path d="M12 2v10m0 0 9-5m-9 5-9-5m9 5v10" stroke="#7C3AED" stroke-width=".9" opacity=".8"/>
+  </svg>
+  <div class="code">404</div>
+  <h1>این صفحه پیدا نشد.</h1>
+  <p>ممکن است آدرس اشتباه تایپ شده باشد یا صفحه جابه‌جا شده باشد.</p>
+  <div class="links">
+    <a class="btn" href="/">Home</a>
+    <a class="btn ghost" href="/apps/">اپلیکیشن‌ها</a>
+  </div>
+</body>
+</html>
