@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# /cubepay-doc/ is a redirect stub and carries its own noindex. It stays
+# crawlable on purpose: a Disallow here would stop crawlers reading that tag,
+# which is the opposite of what it is for.
+
+Sitemap: https://cubesystem.top/sitemap.xml

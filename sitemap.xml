@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Only the three real pages. /cubepay-doc/ is a noindex redirect stub and
+     error.html is the 404 document, so neither belongs here. No lastmod: the
+     deploy checks out a single commit, so any date written here would be a
+     guess, and Google ignores lastmod it cannot trust. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://cubesystem.top/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://cubesystem.top/apps/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cubesystem.top/cubesaz-site/</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>
