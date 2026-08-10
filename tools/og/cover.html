@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face{font-family:'Vazirmatn';font-weight:300 900;
+  src:url('../../assets/fonts/src/vazirmatn-arabic.woff2') format('woff2');
+  unicode-range:U+0600-06FF,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC;}
+@font-face{font-family:'Vazirmatn';font-weight:300 900;
+  src:url('../../assets/fonts/src/vazirmatn-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF,U+2000-206F;}
+@font-face{font-family:'Space Grotesk';font-weight:400 700;
+  src:url('../../assets/fonts/src/spacegrotesk-latin.woff2') format('woff2');}
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#0066FF;--purple:#7C3AED;--muted:rgba(255,255,255,.58)}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{
+  position:relative;display:flex;align-items:center;gap:52px;
+  padding:0 78px;
+  font-family:'Vazirmatn',sans-serif;color:#fff;background:#050505;
+}
+/* the cube and the domain share the left column. A separate footer row, or an
+   absolutely positioned one, reserved its space but never painted here. */
+.left{flex:none;display:flex;flex-direction:column;align-items:center;gap:24px}
+/* the same two glows the site opens with */
+.glow{position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 760px 560px at 82% 12%,rgba(0,102,255,.30),transparent 62%),
+    radial-gradient(ellipse 700px 540px at 14% 92%,rgba(124,58,237,.28),transparent 62%);
+}
+/* faint grid, lifted from the site's backdrop */
+.grid{position:absolute;inset:0;opacity:.5;
+  background-image:
+    linear-gradient(0deg,transparent 0 47px,rgba(0,140,255,.10) 47px 48px),
+    linear-gradient(90deg,transparent 0 47px,rgba(0,140,255,.10) 47px 48px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,#000 25%,transparent 78%);
+}
+/* light vignette only — a heavy one swallows the bottom row and clips the
+   descenders on CubePay and Cubely */
+.edge{position:absolute;inset:0;box-shadow:inset 0 0 120px 10px rgba(5,5,5,.55)}
+
+.copy{position:relative;flex:1;min-width:0}
+.kicker{display:inline-flex;align-items:center;gap:10px;
+  font-family:'Space Grotesk',sans-serif;direction:ltr;
+  font-size:19px;font-weight:500;letter-spacing:.20em;color:rgba(255,255,255,.62);
+  padding:9px 20px;border-radius:999px;
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);
+}
+.kicker i{width:7px;height:7px;border-radius:50%;background:var(--blue);
+  box-shadow:0 0 12px 2px rgba(0,102,255,.9)}
+
+h1{direction:ltr;text-align:right;font-family:'Space Grotesk',sans-serif;
+  font-size:96px;font-weight:700;line-height:.96;letter-spacing:-.015em;margin-top:24px;
+  background:linear-gradient(120deg,#fff 26%,#8ab4ff 58%,var(--purple));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+h1 span{display:block}
+.tag{margin-top:22px;font-size:30px;font-weight:300;line-height:1.75;color:rgba(255,255,255,.80)}
+.tag b{font-weight:700;color:#fff}
+
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:28px;direction:ltr;justify-content:flex-end}
+.chip{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:500;
+  color:rgba(255,255,255,.72);padding:7px 15px;border-radius:11px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11)}
+
+.domain{direction:ltr;display:flex;align-items:center;gap:10px;
+  font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:500;
+  letter-spacing:.05em;color:rgba(255,255,255,.70)}
+
+/* the cube, echoing the hero object without pretending to be a render */
+.scene{position:relative;width:344px;height:344px;flex:none;
+  display:flex;align-items:center;justify-content:center}
+.halo{position:absolute;width:330px;height:330px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,102,255,.40),rgba(124,58,237,.16) 46%,transparent 68%);
+  filter:blur(18px)}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.09)}
+.ring.a{width:352px;height:352px}
+.ring.b{width:286px;height:286px;border-color:rgba(0,102,255,.16)}
+.cube{position:relative;width:236px;height:236px;
+  filter:drop-shadow(0 0 30px rgba(0,102,255,.55)) drop-shadow(0 0 66px rgba(124,58,237,.34))}
+.orb{position:absolute;width:15px;height:15px;border-radius:50%;
+  background:linear-gradient(135deg,#5aa0ff,#a273ff);
+  box-shadow:0 0 16px 3px rgba(90,160,255,.65)}
+.orb.o1{top:12px;left:44%}
+.orb.o2{right:16px;top:36%}
+.orb.o3{bottom:34px;right:26%}
+.orb.o4{bottom:34px;left:26%}
+.orb.o5{left:16px;top:36%}
+</style>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="grid"></div>
+  <div class="edge"></div>
+
+  <div class="copy">
+    <div class="kicker"><i></i>ONE WORLD · FIVE PRODUCTS</div>
+    <h1><span>CUBE</span><span>ECOSYSTEM</span></h1>
+    <div class="tag">فراتر از یک سرویس،<br><b>یک اکوسیستم دیجیتال.</b></div>
+    <div class="chips">
+      <div class="chip">CubeVPN</div>
+      <div class="chip">CubePay</div>
+      <div class="chip">CubeGift</div>
+      <div class="chip">Cubely</div>
+      <div class="chip">CubeSaz</div>
+    </div>
+  </div>
+
+  <div class="left">
+  <div class="scene">
+    <div class="halo"></div>
+    <div class="ring a"></div>
+    <div class="ring b"></div>
+    <svg class="cube" viewBox="0 0 24 24" fill="none">
+      <path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" stroke="#0066FF" stroke-width=".55"/>
+      <path d="M12 2v10m0 0 9-5m-9 5-9-5m9 5v10" stroke="#7C3AED" stroke-width=".42" opacity=".95"/>
+    </svg>
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+    <div class="orb o4"></div><div class="orb o5"></div>
+  </div>
+  <div class="domain"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" stroke="#5aa0ff" stroke-width="1.3"/><path d="M12 2v10m0 0 9-5m-9 5-9-5m9 5v10" stroke="#a273ff" stroke-width="1"/></svg>cubesystem.top</div>
+  </div>
+</body>
+</html>
