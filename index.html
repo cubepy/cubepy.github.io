@@ -294,8 +294,9 @@ h1.hero-title{
 }
 .net-node{
   position:relative;z-index:2;
+  display:flex;align-items:center;gap:9px;
   font-family:var(--en);font-size:13px;font-weight:500;
-  padding:14px 22px;border-radius:16px;
+  padding:13px 20px;border-radius:16px;
   background:var(--glass);border:1px solid var(--glass-border);
   backdrop-filter:blur(14px);
   transition:transform .35s,box-shadow .35s,border-color .35s;
@@ -470,7 +471,15 @@ h1.hero-title{
   position:absolute;left:50%;top:50%;
   display:flex;flex-direction:column;align-items:center;gap:12px;
 }
+/* Brand marks. Each carries its own colours, so nothing here sets a fill. */
+.mark{flex:none;display:block}
+.sat .mark{width:17px;height:17px}
+.net-node .mark{width:19px;height:19px}
+.footer-links .mark{width:17px;height:17px}
+.modal-head .mark{width:42px;height:42px}
+.world .sphere .mark{width:52px;height:52px;filter:drop-shadow(0 0 10px rgba(0,0,0,.55))}
 .world .sphere{
+  display:flex;align-items:center;justify-content:center;
   width:86px;height:86px;border-radius:50%;
   background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.25),rgba(0,102,255,.5) 40%,rgba(5,5,20,.9));
   border:1px solid rgba(0,140,255,.5);
@@ -541,11 +550,7 @@ h1.hero-title{
 }
 .modal-close:hover{color:#fff;border-color:rgba(255,255,255,.35)}
 .modal-head{display:flex;align-items:center;gap:12px;position:relative}
-.modal-head i{
-  width:12px;height:12px;border-radius:4px;flex:none;
-  background:var(--modal-color,var(--blue));
-  box-shadow:0 0 16px var(--modal-color,var(--blue));
-}
+.modal-head #modalMark{display:flex;flex:none}
 .modal-name{font-family:var(--en);font-size:26px;font-weight:700;letter-spacing:.02em}
 .modal-tag{font-size:16.5px;font-weight:700;margin-top:18px;line-height:1.9;position:relative}
 .modal-desc{color:var(--muted);font-size:14px;font-weight:300;line-height:2.1;margin-top:10px;position:relative}
@@ -627,6 +632,12 @@ footer{
 </style>
 </head>
 <body>
+<!-- Brand marks, defined once and referenced with <use> wherever a product is
+     named. Inlined rather than fetched: the page makes no external requests,
+     and six separate files would undo that for 5KB of vectors. Only the line
+     variant of each mark is here; the gradient defs the kit ships with are
+     unused by it, so they are stripped. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="m-vpn" viewBox="0 0 256 256"><path d="M18 180 L238 92" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"/><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#0066FF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#0066FF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M18 180 L60 163" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M190 111 L238 92" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M210 70 L242 90 L216 112" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-pay" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#6D5EF6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#6D5EF6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M82 136 L114 170 L192 86" fill="none" stroke="#2BD9A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-gift" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#EFC46A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#EFC46A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 210 M60.5 93 L195.5 93" fill="none" stroke="#E0784C" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M128 54 C 106 32, 84 36, 92 52 C 98 64, 118 60, 128 54 Z" fill="none" stroke="#E0784C" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M128 54 C 150 32, 172 36, 164 52 C 158 64, 138 60, 128 54 Z" fill="none" stroke="#E0784C" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-cubely" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#FF2E8B" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#FF2E8B" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M92 190 L92 156 M128 190 L128 128 M164 190 L164 100" fill="none" stroke="#FF8A3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M76 84 L110 54 L146 76 L198 30" fill="none" stroke="#FF8A3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M172 26 L202 26 L202 56" fill="none" stroke="#FF8A3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-saz" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M161.8 73.5 L94.2 112.5 M94.2 73.5 L161.8 112.5 M195.5 132.0 L128.0 171.0 M161.8 112.5 L161.8 190.5 M60.5 132.0 L128.0 171.0 M94.2 112.5 L94.2 190.5" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><polygon points="128.0,132.0 161.8,112.5 128.0,93.0 94.2,112.5" fill="#7EA6F7" opacity="0.9"/><polygon points="128.0,132.0 161.8,112.5 161.8,151.5 128.0,171.0" fill="#7EA6F7" opacity="0.62"/><polygon points="128.0,132.0 94.2,112.5 94.2,151.5 128.0,171.0" fill="#7EA6F7" opacity="0.4"/></symbol><symbol id="m-master" viewBox="0 0 256 256"><polygon points="87.3,115.0 128.0,138.5 128.0,185.5 87.3,209.0 46.6,185.5 46.6,138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M87.298 115 L87.298 162 M87.298 162 L46.6 138.5 M87.298 162 L128.0 138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><polygon points="168.7,115.0 209.4,138.5 209.4,185.5 168.7,209.0 128.0,185.5 128.0,138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M168.702 115 L168.702 162 M168.702 162 L128.0 138.5 M168.702 162 L209.4 138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><polygon points="128.0,44.5 168.7,68.0 168.7,115.0 128.0,138.5 87.3,115.0 87.3,68.0" fill="none" stroke="#F5A524" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M128 44.5 L128 91.5 M128 91.5 L87.3 68.0 M128 91.5 L168.7 68.0" fill="none" stroke="#F5A524" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
 
 <!-- preloader -->
 <div id="loader">
@@ -690,12 +701,12 @@ footer{
           <div class="face"></div><div class="face"></div><div class="face"></div>
         </div>
       </div>
-      <div class="sat sat1 en"><i></i>CubePay</div>
-      <div class="sat sat2 p en"><i></i>CubeGift</div>
-      <div class="sat sat3 p en"><i></i>Cubely</div>
-      <div class="sat sat4 en"><i></i>CubeSaz</div>
-      <div class="sat sat5 en"><i></i>CubeVPN</div>
-      <div class="sat sat6 p en"><i></i>CubeMaster</div>
+      <div class="sat sat1 en"><svg class="mark" aria-hidden="true"><use href="#m-pay"/></svg>CubePay</div>
+      <div class="sat sat2 p en"><svg class="mark" aria-hidden="true"><use href="#m-gift"/></svg>CubeGift</div>
+      <div class="sat sat3 p en"><svg class="mark" aria-hidden="true"><use href="#m-cubely"/></svg>Cubely</div>
+      <div class="sat sat4 en"><svg class="mark" aria-hidden="true"><use href="#m-saz"/></svg>CubeSaz</div>
+      <div class="sat sat5 en"><svg class="mark" aria-hidden="true"><use href="#m-vpn"/></svg>CubeVPN</div>
+      <div class="sat sat6 p en"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg>CubeMaster</div>
     </div>
   </div>
 </section>
@@ -721,13 +732,13 @@ footer{
           </linearGradient>
         </defs>
       </svg>
-      <div class="net-node net-top en" data-brand="vpn">CubeVPN</div>
-      <div class="net-node net-left en" data-brand="gift">CubeGift</div>
+      <div class="net-node net-top en" data-brand="vpn"><svg class="mark" aria-hidden="true"><use href="#m-vpn"/></svg>CubeVPN</div>
+      <div class="net-node net-left en" data-brand="gift"><svg class="mark" aria-hidden="true"><use href="#m-gift"/></svg>CubeGift</div>
       <div class="net-node net-core en">CUBE</div>
-      <div class="net-node net-right en" data-brand="pay">CubePay</div>
-      <div class="net-node net-bl en" data-brand="cubely">Cubely</div>
-      <div class="net-node net-br en" data-brand="saz">CubeSaz</div>
-      <div class="net-node net-bottom en" data-brand="master">CubeMaster</div>
+      <div class="net-node net-right en" data-brand="pay"><svg class="mark" aria-hidden="true"><use href="#m-pay"/></svg>CubePay</div>
+      <div class="net-node net-bl en" data-brand="cubely"><svg class="mark" aria-hidden="true"><use href="#m-cubely"/></svg>Cubely</div>
+      <div class="net-node net-br en" data-brand="saz"><svg class="mark" aria-hidden="true"><use href="#m-saz"/></svg>CubeSaz</div>
+      <div class="net-node net-bottom en" data-brand="master"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg>CubeMaster</div>
     </div>
 
     <p class="net-msg reveal"><strong>CUBE is the core.</strong><br>Everything connects around it.</p>
@@ -869,22 +880,22 @@ footer{
         </div>
         <!-- angles are 360/n apart; six worlds means 60, not 72 -->
         <a class="world" href="https://t.me/Cube_VPNN" target="_blank" rel="noopener" data-angle="0" data-brand="vpn">
-          <div class="sphere"></div><span>CubeVPN</span>
+          <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-vpn"/></svg></div><span>CubeVPN</span>
         </a>
         <a class="world pu" href="https://t.me/Cubepy" target="_blank" rel="noopener" data-angle="60" data-brand="pay">
-          <div class="sphere"></div><span>CubePay</span>
+          <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-pay"/></svg></div><span>CubePay</span>
         </a>
         <a class="world" href="https://cubegift.ir/" target="_blank" rel="noopener" data-angle="120" data-brand="gift">
-          <div class="sphere"></div><span>CubeGift</span>
+          <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-gift"/></svg></div><span>CubeGift</span>
         </a>
         <a class="world pu" href="https://cubely.ir/" target="_blank" rel="noopener" data-angle="180" data-brand="cubely">
-          <div class="sphere"></div><span>Cubely</span>
+          <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-cubely"/></svg></div><span>Cubely</span>
         </a>
         <a class="world" href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-angle="240" data-brand="saz">
-          <div class="sphere"></div><span>CubeSaz</span>
+          <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-saz"/></svg></div><span>CubeSaz</span>
         </a>
         <a class="world pu" href="https://t.me/CubePanel" target="_blank" rel="noopener" data-angle="300" data-brand="master">
-          <div class="sphere"></div><span>CubeMaster</span>
+          <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg></div><span>CubeMaster</span>
         </a>
       </div>
     </div>
@@ -937,12 +948,12 @@ footer{
   <div class="footer-name en">CUBE ECOSYSTEM</div>
   <div class="footer-motto">Connect.<br>Create.<br>Evolve.</div>
   <div class="footer-links">
-    <a href="https://t.me/Cube_VPNN" target="_blank" rel="noopener" data-brand="vpn"><i></i>CubeVPN</a>
-    <a href="https://t.me/Cubepy" target="_blank" rel="noopener" data-brand="pay"><i></i>CubePay</a>
-    <a href="https://cubegift.ir/" target="_blank" rel="noopener" data-brand="gift"><i></i>CubeGift</a>
-    <a href="https://cubely.ir/" target="_blank" rel="noopener" data-brand="cubely"><i></i>Cubely</a>
-    <a href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-brand="saz"><i></i>CubeSaz</a>
-    <a href="https://t.me/CubePanel" target="_blank" rel="noopener" data-brand="master"><i></i>CubeMaster</a>
+    <a href="https://t.me/Cube_VPNN" target="_blank" rel="noopener" data-brand="vpn"><svg class="mark" aria-hidden="true"><use href="#m-vpn"/></svg>CubeVPN</a>
+    <a href="https://t.me/Cubepy" target="_blank" rel="noopener" data-brand="pay"><svg class="mark" aria-hidden="true"><use href="#m-pay"/></svg>CubePay</a>
+    <a href="https://cubegift.ir/" target="_blank" rel="noopener" data-brand="gift"><svg class="mark" aria-hidden="true"><use href="#m-gift"/></svg>CubeGift</a>
+    <a href="https://cubely.ir/" target="_blank" rel="noopener" data-brand="cubely"><svg class="mark" aria-hidden="true"><use href="#m-cubely"/></svg>Cubely</a>
+    <a href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-brand="saz"><svg class="mark" aria-hidden="true"><use href="#m-saz"/></svg>CubeSaz</a>
+    <a href="https://t.me/CubePanel" target="_blank" rel="noopener" data-brand="master"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg>CubeMaster</a>
     <a href="apps/"><i></i>Apps</a>
     <a href="https://donofa.com/Cube" target="_blank" rel="noopener"><i></i>Support</a>
   </div>
@@ -953,7 +964,7 @@ footer{
 <div class="modal-backdrop" id="brandModal" role="dialog" aria-modal="true">
   <div class="modal">
     <button class="modal-close" id="modalClose" aria-label="بستن">✕</button>
-    <div class="modal-head"><i></i><div class="modal-name en" id="modalName"></div></div>
+    <div class="modal-head"><span id="modalMark"></span><div class="modal-name en" id="modalName"></div></div>
     <div class="modal-tag" id="modalTag"></div>
     <p class="modal-desc" id="modalDesc"></p>
     <ul class="modal-feats" id="modalFeats"></ul>
@@ -1503,7 +1514,8 @@ function loadThree(){
         elTag=document.getElementById('modalTag'),
         elDesc=document.getElementById('modalDesc'),
         elFeats=document.getElementById('modalFeats'),
-        elCta=document.getElementById('modalCta');
+        elCta=document.getElementById('modalCta'),
+        elMark=document.getElementById('modalMark');
   function open(key){
     const b=BRANDS[key];if(!b)return;
     elName.textContent=b.name;
@@ -1512,6 +1524,14 @@ function loadThree(){
     elFeats.innerHTML='';
     b.feats.forEach(f=>{const li=document.createElement('li');li.textContent=f;elFeats.appendChild(li)});
     elCta.href=b.url;elCta.textContent=b.cta+' ↗';
+    /* Built node by node rather than assigned as markup: key arrives from a
+       data attribute in the page, and this keeps it out of an HTML parser. */
+    elMark.textContent='';
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'),
+          use=document.createElementNS('http://www.w3.org/2000/svg','use');
+    svg.setAttribute('class','mark');svg.setAttribute('aria-hidden','true');
+    use.setAttribute('href','#m-'+key);
+    svg.appendChild(use);elMark.appendChild(svg);
     modal.style.setProperty('--modal-color',b.color);
     modal.style.setProperty('--modal-glow',b.glow);
     bd.classList.add('open');
