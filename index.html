@@ -256,6 +256,26 @@ h1.hero-title{
 .sat4{animation:float4 8.5s ease-in-out infinite;transform:translate(70%,420%)}
 .sat5{animation:float5 6.5s ease-in-out infinite;transform:translate(-285%,-90%)}
 .sat6{animation:float2 7.8s ease-in-out infinite;transform:translate(85%,90%)}
+/* Those offsets are percentages of each pill's own width, so they are tuned
+   to the desktop scene and to how long each label happens to be — on a phone
+   CubeVPN hung off the left edge and CubeGift left the box entirely. Below
+   900px the pills are placed as a fraction of the scene instead, which does
+   not care how wide the label is. The float has to be switched off to do it:
+   its keyframes set transform, and an animation beats a plain declaration. */
+@media(max-width:900px){
+  .sat{
+    animation:none;
+    left:var(--sx);top:var(--sy);
+    transform:translate(-50%,-50%);
+    font-size:11.5px;padding:7px 12px;
+  }
+  .sat1{--sx:26%;--sy:9%}
+  .sat2{--sx:74%;--sy:17%}
+  .sat3{--sx:21%;--sy:79%}
+  .sat4{--sx:60%;--sy:92%}
+  .sat5{--sx:17%;--sy:45%}
+  .sat6{--sx:74%;--sy:60%}
+}
 @keyframes float1{0%,100%{transform:translate(-160%,-620%)}50%{transform:translate(-160%,-680%)}}
 @keyframes float2{0%,100%{transform:translate(60%,-380%)}50%{transform:translate(60%,-330%)}}
 @keyframes float3{0%,100%{transform:translate(-230%,240%)}50%{transform:translate(-230%,300%)}}
@@ -416,14 +436,18 @@ h1.hero-title{
 @keyframes rot{to{transform:rotate(360deg)}}
 .ai-orb{width:86px;height:86px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(0,140,255,.9),rgba(124,58,237,.7));box-shadow:0 0 44px rgba(0,102,255,.6);animation:pulse 3.4s ease-in-out infinite}
 /* CubeMaster: relay, three candidate lanes, exit — one of them carrying */
-.lanes{display:flex;align-items:center;gap:18px;direction:ltr}
+/* The rail flexes instead of sitting at a fixed width: fixed, it pushed IR
+   and EXIT past the edges of the panel that clips them on a 360px screen. */
+.lanes{display:flex;align-items:center;justify-content:center;gap:16px;direction:ltr;
+  width:100%;max-width:344px;padding:0 16px}
 .lane-end{
+  flex:none;
   font-family:var(--en);font-size:11.5px;font-weight:600;letter-spacing:.08em;
   padding:14px 12px;border-radius:12px;white-space:nowrap;
   background:var(--glass);border:1px solid rgba(0,140,255,.35);
   box-shadow:0 0 22px rgba(0,102,255,.18);
 }
-.lane-rail{display:flex;flex-direction:column;gap:24px;width:186px}
+.lane-rail{display:flex;flex-direction:column;gap:24px;flex:1 1 auto;min-width:0;max-width:186px}
 .lane{
   height:2px;border-radius:2px;
   background:repeating-linear-gradient(90deg,rgba(255,255,255,.28) 0 5px,transparent 5px 12px);
@@ -815,8 +839,8 @@ footer{
     <div class="prod-text">
       <div class="prod-num en anim">06</div>
       <h2 class="prod-name en anim">Cube<span class="accent">Master</span></h2>
-      <div class="prod-fa anim">تونل‌هایت را خودش<br>سرپا نگه می‌دارد.</div>
-      <p class="prod-desc anim">ارکستراتور تونل و پنل فروش نمایندگی. هر مسیر را مدام از داخل ایران می‌سنجد و وقتی یکی افت می‌کند، کاربرها را بی‌سروصدا روی مسیر سالم می‌برد — بدون اینکه کسی بیدار باشد.</p>
+      <div class="prod-fa anim">پنل فروش نمایندگی،<br>روی زیرساختی که نمی‌خوابد.</div>
+      <p class="prod-desc anim">نماینده‌هایت را کامل مدیریت کن: کیف پول، قیمت هر گیگ، صورت‌حساب خودکار، انقضا و ربات تلگرام. زیرش هم مسیرها مدام از داخل ایران سنجیده می‌شوند و وقتی یکی افت می‌کند، کاربرها بی‌سروصدا روی مسیر سالم می‌روند.</p>
       <a class="prod-link anim" href="https://t.me/CubePanel" target="_blank" rel="noopener">t.me/CubePanel ↗</a>
     </div>
     <div class="prod-visual anim-vis">
@@ -1473,9 +1497,9 @@ function loadThree(){
       feats:['پشتیبانی از ۱۳ پنل: مرزبان، هیدیفای، 3X-UI و…','مینی‌اپ اختصاصی مشتری داخل تلگرام','کیف پول و درگاه: کریپتو، کارت‌به‌کارت، زرین‌پال','بکاپ خودکار هر ۶ ساعت + ۳ روز تست رایگان'],
       url:'https://t.me/CubeSaz',cta:'Join CubeSaz'},
     master:{name:'CubeMaster',color:'#7C3AED',glow:'rgba(124,58,237,.18)',
-      tag:'تونل‌ها را خودش سرپا نگه می‌دارد.',
-      desc:'ارکستراتور تونل و پنل فروش نمایندگی روی PasarGuard — مسیرها را از داخل ایران می‌سنجد و پیش از آنکه کاربر متوجه شود، روی مسیر سالم سوییچ می‌کند.',
-      feats:['سنجش مسیر از داخل ایران، نه از بیرون','جابه‌جایی خودکار روی مسیر سالم','۱۰ نوع تونل: Backhaul · rathole · GOST · wstunnel و…','کیف پول و صورت‌حساب نماینده + ربات تلگرام'],
+      tag:'پنل فروش نمایندگی.',
+      desc:'نمایندگی‌ات را کامل می‌گرداند — کیف پول، قیمت‌گذاری هر گیگ، صورت‌حساب خودکار و انقضا — و زیر همان پنل، تونل‌ها را خودش سرپا نگه می‌دارد.',
+      feats:['کیف پول نماینده با صورت‌حساب و شارژ خودکار','قیمت هر گیگابایت و سقف اعتبار برای هر نماینده','ربات تلگرام نماینده + تأیید رسید و ثبت‌نام','مسیرها از داخل ایران سنجیده و خودکار جابه‌جا می‌شوند'],
       url:'https://t.me/CubePanel',cta:'Join CubePanel'}
   };
   const bd=document.getElementById('brandModal'),
