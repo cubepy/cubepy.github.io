@@ -167,7 +167,11 @@ html.js .anim-hide{opacity:0}
   display:grid;grid-template-columns:1.05fr .95fr;
   align-items:center;gap:40px;width:100%;
 }
-@media(max-width:900px){
+/* Stacks well before the columns actually collide. Two columns plus a 460px
+   scene needs more room than it looks: between 900 and 1100 the grid was
+   wider than the page, which in RTL pushes the overflow off the left edge —
+   that is what was carrying CubeVPN and Cubely off the screen. */
+@media(max-width:1100px){
   .hero-grid{grid-template-columns:1fr;text-align:center}
   .hero-scene{order:-1;margin:0 auto}
 }
@@ -196,9 +200,9 @@ h1.hero-title{
   color:var(--muted);font-size:clamp(15px,1.6vw,18px);line-height:2.1;
   margin-top:16px;max-width:480px;font-weight:300;
 }
-@media(max-width:900px){.hero-sub{margin-inline:auto}}
+@media(max-width:1100px){.hero-sub{margin-inline:auto}}
 .hero-cta{margin-top:38px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-@media(max-width:900px){.hero-cta{justify-content:center}}
+@media(max-width:1100px){.hero-cta{justify-content:center}}
 .btn-primary{
   position:relative;display:inline-flex;align-items:center;gap:10px;
   font-family:var(--en);font-weight:500;font-size:15px;letter-spacing:.03em;
@@ -217,7 +221,11 @@ h1.hero-title{
 
 /* ----- hero 3D scene ----- */
 .hero-scene{
-  position:relative;width:min(460px,86vw);height:min(460px,86vw);
+  /* max-width lets it shrink to its grid column. Without it the box kept its
+     460px between about 900px and 1100px, where the column is narrower than
+     that, and overflowed far enough left to push the pills off the screen. */
+  position:relative;width:min(460px,86vw);max-width:100%;
+  aspect-ratio:1;height:auto;
   margin-inline:auto;
 }
 #cubeCanvas{position:absolute;inset:0;width:100%;height:100%}
@@ -240,7 +248,7 @@ h1.hero-title{
 .face:nth-child(5){transform:rotateX(90deg) translateZ(75px)}
 .face:nth-child(6){transform:rotateX(-90deg) translateZ(75px)}
 .sat{
-  position:absolute;left:50%;top:50%;z-index:3;
+  position:absolute;z-index:3;
   display:flex;align-items:center;gap:7px;
   font-family:var(--en);font-size:12.5px;font-weight:500;letter-spacing:.04em;
   padding:9px 16px;border-radius:999px;white-space:nowrap;
@@ -250,37 +258,24 @@ h1.hero-title{
 }
 .sat i{width:7px;height:7px;border-radius:2px;background:var(--blue);box-shadow:0 0 10px var(--blue);flex:none}
 .sat.p i{background:var(--purple);box-shadow:0 0 10px var(--purple)}
-.sat1{animation:float1 7s ease-in-out infinite;transform:translate(-160%,-620%)}
-.sat2{animation:float2 8s ease-in-out infinite;transform:translate(60%,-380%)}
-.sat3{animation:float3 7.5s ease-in-out infinite;transform:translate(-230%,240%)}
-.sat4{animation:float4 8.5s ease-in-out infinite;transform:translate(70%,420%)}
-.sat5{animation:float5 6.5s ease-in-out infinite;transform:translate(-285%,-90%)}
-.sat6{animation:float2 7.8s ease-in-out infinite;transform:translate(85%,90%)}
-/* Those offsets are percentages of each pill's own width, so they are tuned
-   to the desktop scene and to how long each label happens to be — on a phone
-   CubeVPN hung off the left edge and CubeGift left the box entirely. Below
-   900px the pills are placed as a fraction of the scene instead, which does
-   not care how wide the label is. The float has to be switched off to do it:
-   its keyframes set transform, and an animation beats a plain declaration. */
-@media(max-width:900px){
-  .sat{
-    animation:none;
-    left:var(--sx);top:var(--sy);
-    transform:translate(-50%,-50%);
-    font-size:11.5px;padding:7px 12px;
-  }
-  .sat1{--sx:26%;--sy:9%}
-  .sat2{--sx:74%;--sy:17%}
-  .sat3{--sx:21%;--sy:79%}
-  .sat4{--sx:60%;--sy:92%}
-  .sat5{--sx:17%;--sy:45%}
-  .sat6{--sx:74%;--sy:60%}
-}
-@keyframes float1{0%,100%{transform:translate(-160%,-620%)}50%{transform:translate(-160%,-680%)}}
-@keyframes float2{0%,100%{transform:translate(60%,-380%)}50%{transform:translate(60%,-330%)}}
-@keyframes float3{0%,100%{transform:translate(-230%,240%)}50%{transform:translate(-230%,300%)}}
-@keyframes float4{0%,100%{transform:translate(70%,420%)}50%{transform:translate(70%,370%)}}
-@keyframes float5{0%,100%{transform:translate(-285%,-90%)}50%{transform:translate(-285%,-150%)}}
+/* Each pill is pinned by the edge it sits nearest, as a fraction of the scene.
+   The offsets used to be percentages of the pill's own width, which made the
+   position depend on how long the label happened to be and on how wide the
+   scene was — tuned on a large screen, CubeVPN fell off the left edge and
+   CubeGift left the box entirely anywhere under about 1200px. An edge cannot
+   drift like that, so one set of numbers now holds at every width.
+
+   The float animates the standalone translate property rather than transform:
+   the entrance tween scales these, and two things writing transform fight. */
+.sat1{left:10%;top:6%;animation:floatA 7s ease-in-out infinite}
+.sat2{right:8%;top:15%;animation:floatB 8s ease-in-out infinite}
+.sat3{left:6%;top:74%;animation:floatB 7.5s ease-in-out infinite}
+.sat4{right:18%;top:88%;animation:floatA 8.5s ease-in-out infinite}
+.sat5{left:2%;top:42%;animation:floatB 6.5s ease-in-out infinite}
+.sat6{right:2%;top:53%;animation:floatA 7.8s ease-in-out infinite}
+@media(max-width:900px){.sat{font-size:11.5px;padding:7px 12px}}
+@keyframes floatA{0%,100%{translate:0 0}50%{translate:0 -11px}}
+@keyframes floatB{0%,100%{translate:0 0}50%{translate:0 10px}}
 
 /* ---------- network section ---------- */
 #network{padding:140px 0 120px;text-align:center}
