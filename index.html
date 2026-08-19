@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cube Ecosystem — فراتر از یک سرویس، یک اکوسیستم دیجیتال</title>
-<meta name="description" content="اکوسیستم Cube — اتصال، پرداخت، سرگرمی، بازار دیجیتال، ساخت ربات و مدیریت زیرساخت. CubeVPN، CubePay، CubeGift، Cubely، CubeSaz و CubeMaster در یک جهان.">
+<meta name="description" content="اکوسیستم Cube — اتصال، پرداخت، بازار دیجیتال، ساخت ربات و مدیریت زیرساخت. CubeVPN، CubePay، Cubely، CubeSaz و CubeMaster در یک جهان.">
 <!-- cubepy.github.io serves these same files as the fallback for visitors
      ArvanCloud does not reach, so every page exists at two addresses. The
      canonical names the real one so Google does not split them. -->
@@ -256,23 +256,20 @@ h1.hero-title{
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   box-shadow:0 8px 24px rgba(0,0,0,.4);
 }
-.sat i{width:7px;height:7px;border-radius:2px;background:var(--blue);box-shadow:0 0 10px var(--blue);flex:none}
-.sat.p i{background:var(--purple);box-shadow:0 0 10px var(--purple)}
 /* Each pill is pinned by the edge it sits nearest, as a fraction of the scene.
    The offsets used to be percentages of the pill's own width, which made the
    position depend on how long the label happened to be and on how wide the
-   scene was — tuned on a large screen, CubeVPN fell off the left edge and
-   CubeGift left the box entirely anywhere under about 1200px. An edge cannot
+   scene was — tuned on a large screen, one pill fell off the left edge and
+   another left the box entirely anywhere under about 1200px. An edge cannot
    drift like that, so one set of numbers now holds at every width.
 
    The float animates the standalone translate property rather than transform:
    the entrance tween scales these, and two things writing transform fight. */
 .sat1{left:10%;top:6%;animation:floatA 7s ease-in-out infinite}
-.sat2{right:8%;top:15%;animation:floatB 8s ease-in-out infinite}
+.sat2{right:4%;top:16%;animation:floatB 8s ease-in-out infinite}
 .sat3{left:6%;top:74%;animation:floatB 7.5s ease-in-out infinite}
-.sat4{right:18%;top:88%;animation:floatA 8.5s ease-in-out infinite}
+.sat4{right:16%;top:88%;animation:floatA 8.5s ease-in-out infinite}
 .sat5{left:2%;top:42%;animation:floatB 6.5s ease-in-out infinite}
-.sat6{right:2%;top:53%;animation:floatA 7.8s ease-in-out infinite}
 @media(max-width:900px){.sat{font-size:11.5px;padding:7px 12px}}
 @keyframes floatA{0%,100%{translate:0 0}50%{translate:0 -11px}}
 @keyframes floatB{0%,100%{translate:0 0}50%{translate:0 10px}}
@@ -321,8 +318,6 @@ h1.hero-title{
 .net-left{grid-column:1;grid-row:2}
 .net-bl{grid-column:1;grid-row:3;margin-top:52px}
 .net-br{grid-column:3;grid-row:3;margin-top:52px}
-/* mirrors net-top, so the six sit symmetrically around the core */
-.net-bottom{grid-column:2;grid-row:3;margin-top:52px}
 .net-lines{position:absolute;inset:0;z-index:1;pointer-events:none}
 .net-lines line{
   stroke:url(#lineGrad);stroke-width:1.5;
@@ -412,11 +407,6 @@ h1.hero-title{
 @keyframes cardfloat{0%,100%{translate:0 0}50%{translate:0 -12px}}
 .paycard.c1,.paycard.c2{animation:cardfloat 6s ease-in-out infinite}
 .paycard.c2{animation-delay:1.2s}
-/* gift */
-.giftbox{position:relative;width:170px;height:170px;border-radius:20px;background:linear-gradient(150deg,rgba(124,58,237,.3),rgba(0,102,255,.18));border:1.5px solid rgba(124,58,237,.6);animation:cardfloat 5.5s ease-in-out infinite;display:flex;align-items:center;justify-content:center}
-.giftbox::before{content:"";position:absolute;top:0;bottom:0;width:26px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.1);border-inline:1px solid rgba(255,255,255,.2)}
-.giftbox::after{content:"";position:absolute;left:0;right:0;height:26px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border-block:1px solid rgba(255,255,255,.2)}
-.gift-glow{font-size:38px;position:relative;z-index:1;filter:drop-shadow(0 0 18px rgba(124,58,237,.8))}
 /* market */
 .market{display:grid;grid-template-columns:repeat(3,64px);gap:12px}
 .mk{height:64px;border-radius:14px;background:var(--glass);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:22px;animation:cardfloat 5s ease-in-out infinite}
@@ -637,7 +627,7 @@ footer{
      and six separate files would undo that for 5KB of vectors. Only the line
      variant of each mark is here; the gradient defs the kit ships with are
      unused by it, so they are stripped. -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="m-vpn" viewBox="0 0 256 256"><path d="M18 180 L238 92" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"/><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#0066FF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#0066FF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M18 180 L60 163" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M190 111 L238 92" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M210 70 L242 90 L216 112" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-pay" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#6D5EF6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#6D5EF6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M82 136 L114 170 L192 86" fill="none" stroke="#2BD9A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-gift" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#EFC46A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#EFC46A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 210 M60.5 93 L195.5 93" fill="none" stroke="#E0784C" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M128 54 C 106 32, 84 36, 92 52 C 98 64, 118 60, 128 54 Z" fill="none" stroke="#E0784C" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M128 54 C 150 32, 172 36, 164 52 C 158 64, 138 60, 128 54 Z" fill="none" stroke="#E0784C" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-cubely" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#FF2E8B" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#FF2E8B" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M92 190 L92 156 M128 190 L128 128 M164 190 L164 100" fill="none" stroke="#FF8A3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M76 84 L110 54 L146 76 L198 30" fill="none" stroke="#FF8A3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M172 26 L202 26 L202 56" fill="none" stroke="#FF8A3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-saz" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M161.8 73.5 L94.2 112.5 M94.2 73.5 L161.8 112.5 M195.5 132.0 L128.0 171.0 M161.8 112.5 L161.8 190.5 M60.5 132.0 L128.0 171.0 M94.2 112.5 L94.2 190.5" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><polygon points="128.0,132.0 161.8,112.5 128.0,93.0 94.2,112.5" fill="#7EA6F7" opacity="0.9"/><polygon points="128.0,132.0 161.8,112.5 161.8,151.5 128.0,171.0" fill="#7EA6F7" opacity="0.62"/><polygon points="128.0,132.0 94.2,112.5 94.2,151.5 128.0,171.0" fill="#7EA6F7" opacity="0.4"/></symbol><symbol id="m-master" viewBox="0 0 256 256"><polygon points="87.3,115.0 128.0,138.5 128.0,185.5 87.3,209.0 46.6,185.5 46.6,138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M87.298 115 L87.298 162 M87.298 162 L46.6 138.5 M87.298 162 L128.0 138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><polygon points="168.7,115.0 209.4,138.5 209.4,185.5 168.7,209.0 128.0,185.5 128.0,138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M168.702 115 L168.702 162 M168.702 162 L128.0 138.5 M168.702 162 L209.4 138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><polygon points="128.0,44.5 168.7,68.0 168.7,115.0 128.0,138.5 87.3,115.0 87.3,68.0" fill="none" stroke="#F5A524" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M128 44.5 L128 91.5 M128 91.5 L87.3 68.0 M128 91.5 L168.7 68.0" fill="none" stroke="#F5A524" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="m-vpn" viewBox="0 0 256 256"><path d="M18 180 L238 92" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"/><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#0066FF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#0066FF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M18 180 L60 163" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M190 111 L238 92" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M210 70 L242 90 L216 112" fill="none" stroke="#22D3EE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-pay" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#6D5EF6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#6D5EF6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M82 136 L114 170 L192 86" fill="none" stroke="#2BD9A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-cubely" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#FF2E8B" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#FF2E8B" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M92 190 L92 156 M128 190 L128 128 M164 190 L164 100" fill="none" stroke="#FF8A3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M76 84 L110 54 L146 76 L198 30" fill="none" stroke="#FF8A3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M172 26 L202 26 L202 56" fill="none" stroke="#FF8A3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="m-saz" viewBox="0 0 256 256"><polygon points="128.0,54.0 195.5,93.0 195.5,171.0 128.0,210.0 60.5,171.0 60.5,93.0" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M128 54 L128 132 M128 132 L60.5 93 M128 132 L195.5 93" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M161.8 73.5 L94.2 112.5 M94.2 73.5 L161.8 112.5 M195.5 132.0 L128.0 171.0 M161.8 112.5 L161.8 190.5 M60.5 132.0 L128.0 171.0 M94.2 112.5 L94.2 190.5" fill="none" stroke="#2563EB" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><polygon points="128.0,132.0 161.8,112.5 128.0,93.0 94.2,112.5" fill="#7EA6F7" opacity="0.9"/><polygon points="128.0,132.0 161.8,112.5 161.8,151.5 128.0,171.0" fill="#7EA6F7" opacity="0.62"/><polygon points="128.0,132.0 94.2,112.5 94.2,151.5 128.0,171.0" fill="#7EA6F7" opacity="0.4"/></symbol><symbol id="m-master" viewBox="0 0 256 256"><polygon points="87.3,115.0 128.0,138.5 128.0,185.5 87.3,209.0 46.6,185.5 46.6,138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M87.298 115 L87.298 162 M87.298 162 L46.6 138.5 M87.298 162 L128.0 138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><polygon points="168.7,115.0 209.4,138.5 209.4,185.5 168.7,209.0 128.0,185.5 128.0,138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M168.702 115 L168.702 162 M168.702 162 L128.0 138.5 M168.702 162 L209.4 138.5" fill="none" stroke="#1EE0A0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><polygon points="128.0,44.5 168.7,68.0 168.7,115.0 128.0,138.5 87.3,115.0 87.3,68.0" fill="none" stroke="#F5A524" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M128 44.5 L128 91.5 M128 91.5 L87.3 68.0 M128 91.5 L168.7 68.0" fill="none" stroke="#F5A524" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
 
 <!-- preloader -->
 <div id="loader">
@@ -666,7 +656,6 @@ footer{
     <a href="#network">Network</a>
     <a href="#vpn">CubeVPN</a>
     <a href="#pay">CubePay</a>
-    <a href="#gift">CubeGift</a>
     <a href="#cubely">Cubely</a>
     <a href="#saz">CubeSaz</a>
     <a href="#master">CubeMaster</a>
@@ -679,10 +668,10 @@ footer{
 <section id="hero">
   <div class="wrap hero-grid">
     <div class="hero-copy" id="heroCopy">
-      <span class="hero-kicker reveal"><span class="dot"></span> ONE WORLD · SIX PRODUCTS</span>
+      <span class="hero-kicker reveal"><span class="dot"></span> ONE WORLD · FIVE PRODUCTS</span>
       <h1 class="hero-title en reveal">CUBE<br>ECOSYSTEM</h1>
       <div class="hero-fa reveal">فراتر از یک سرویس،<br>یک اکوسیستم دیجیتال.</div>
-      <p class="hero-sub reveal">اتصال، پرداخت، سرگرمی، بازار دیجیتال، ساخت ربات و زیرساخت.<br>همه در یک جهان.</p>
+      <p class="hero-sub reveal">اتصال، پرداخت، بازار دیجیتال، ساخت ربات و زیرساخت.<br>همه در یک جهان.</p>
       <div class="hero-cta reveal">
         <a class="btn-primary en" href="#network">Explore Ecosystem
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14m0 0 6-6m-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -702,11 +691,10 @@ footer{
         </div>
       </div>
       <div class="sat sat1 en"><svg class="mark" aria-hidden="true"><use href="#m-pay"/></svg>CubePay</div>
-      <div class="sat sat2 p en"><svg class="mark" aria-hidden="true"><use href="#m-gift"/></svg>CubeGift</div>
-      <div class="sat sat3 p en"><svg class="mark" aria-hidden="true"><use href="#m-cubely"/></svg>Cubely</div>
+      <div class="sat sat3 en"><svg class="mark" aria-hidden="true"><use href="#m-cubely"/></svg>Cubely</div>
       <div class="sat sat4 en"><svg class="mark" aria-hidden="true"><use href="#m-saz"/></svg>CubeSaz</div>
       <div class="sat sat5 en"><svg class="mark" aria-hidden="true"><use href="#m-vpn"/></svg>CubeVPN</div>
-      <div class="sat sat6 p en"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg>CubeMaster</div>
+      <div class="sat sat2 en"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg>CubeMaster</div>
     </div>
   </div>
 </section>
@@ -716,7 +704,7 @@ footer{
   <div class="wrap">
     <div class="section-kicker reveal">THE CUBE NETWORK</div>
     <h2 class="section-title en reveal">One core.<br>Infinite connections.</h2>
-    <p class="section-fa reveal">همه‌چیز از یک هسته شروع می‌شود — CUBE قلب اکوسیستم است<br>و شش جهان دیجیتال به دور آن می‌چرخند.</p>
+    <p class="section-fa reveal">همه‌چیز از یک هسته شروع می‌شود — CUBE قلب اکوسیستم است<br>و پنج جهان دیجیتال به دور آن می‌چرخند.</p>
 
     <div class="net-scene reveal">
       <!-- Connector lines are generated from the real card positions in JS
@@ -733,12 +721,11 @@ footer{
         </defs>
       </svg>
       <div class="net-node net-top en" data-brand="vpn"><svg class="mark" aria-hidden="true"><use href="#m-vpn"/></svg>CubeVPN</div>
-      <div class="net-node net-left en" data-brand="gift"><svg class="mark" aria-hidden="true"><use href="#m-gift"/></svg>CubeGift</div>
       <div class="net-node net-core en">CUBE</div>
       <div class="net-node net-right en" data-brand="pay"><svg class="mark" aria-hidden="true"><use href="#m-pay"/></svg>CubePay</div>
       <div class="net-node net-bl en" data-brand="cubely"><svg class="mark" aria-hidden="true"><use href="#m-cubely"/></svg>Cubely</div>
       <div class="net-node net-br en" data-brand="saz"><svg class="mark" aria-hidden="true"><use href="#m-saz"/></svg>CubeSaz</div>
-      <div class="net-node net-bottom en" data-brand="master"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg>CubeMaster</div>
+      <div class="net-node net-left en" data-brand="master"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg>CubeMaster</div>
     </div>
 
     <p class="net-msg reveal"><strong>CUBE is the core.</strong><br>Everything connects around it.</p>
@@ -783,27 +770,11 @@ footer{
   </div>
 </section>
 
-<!-- ═══════════ 03 CubeGift ═══════════ -->
-<section id="gift" class="product">
+<!-- ═══════════ 03 Cubely ═══════════ -->
+<section id="cubely" class="product">
   <div class="wrap prod-grid">
     <div class="prod-text">
       <div class="prod-num en anim">03</div>
-      <h2 class="prod-name en anim">Cube<span class="accent">Gift</span></h2>
-      <div class="prod-fa anim">دنیای گیفت کارت‌ها،<br>در یک تجربه مدرن.</div>
-      <p class="prod-desc anim">گیفت کارت‌های دیجیتال از سراسر دنیا — با تحویل آنی و تجربه‌ای که حس آینده می‌دهد.</p>
-      <a class="prod-link anim" href="https://cubegift.ir/" target="_blank" rel="noopener">cubegift.ir ↗</a>
-    </div>
-    <div class="prod-visual anim-vis">
-      <div class="viz-icon giftbox"><span class="gift-glow">🎁</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ 04 Cubely ═══════════ -->
-<section id="cubely" class="product alt">
-  <div class="wrap prod-grid">
-    <div class="prod-text">
-      <div class="prod-num en anim">04</div>
       <h2 class="prod-name en anim">Cube<span class="accent">ly</span></h2>
       <div class="prod-fa anim">بازار خدمات دیجیتال.</div>
       <p class="prod-desc anim">هر چیزی که آنلاین نیاز داری — در یک مارکت دیجیتال مدرن، سریع و قابل اعتماد.</p>
@@ -819,11 +790,11 @@ footer{
   </div>
 </section>
 
-<!-- ═══════════ 05 CubeSaz ═══════════ -->
-<section id="saz" class="product">
+<!-- ═══════════ 04 CubeSaz ═══════════ -->
+<section id="saz" class="product alt">
   <div class="wrap prod-grid">
     <div class="prod-text">
-      <div class="prod-num en anim">05</div>
+      <div class="prod-num en anim">04</div>
       <h2 class="prod-name en anim">Cube<span class="accent">Saz</span></h2>
       <div class="prod-fa anim">ربات فروش خودت را<br>در ۲ دقیقه بساز.</div>
       <p class="prod-desc anim">پلتفرم ساخت ربات فروش — بدون سرور، بدون کدنویسی، بدون هزینه اولیه. از اتصال پنل تا پرداخت و تحویل، همه‌چیز خودکار.</p>
@@ -839,11 +810,11 @@ footer{
   </div>
 </section>
 
-<!-- ═══════════ 06 CubeMaster ═══════════ -->
-<section id="master" class="product alt">
+<!-- ═══════════ 05 CubeMaster ═══════════ -->
+<section id="master" class="product">
   <div class="wrap prod-grid">
     <div class="prod-text">
-      <div class="prod-num en anim">06</div>
+      <div class="prod-num en anim">05</div>
       <h2 class="prod-name en anim">Cube<span class="accent">Master</span></h2>
       <div class="prod-fa anim">پنل فروش نمایندگی،<br>روی زیرساختی که نمی‌خوابد.</div>
       <p class="prod-desc anim">نماینده‌هایت را کامل مدیریت کن: کیف پول، قیمت هر گیگ، صورت‌حساب خودکار، انقضا و ربات تلگرام. زیرش هم مسیرها مدام از داخل ایران سنجیده می‌شوند و وقتی یکی افت می‌کند، کاربرها بی‌سروصدا روی مسیر سالم می‌روند.</p>
@@ -869,8 +840,8 @@ footer{
 <section id="worlds">
   <div class="wrap">
     <div class="section-kicker reveal">ORBIT</div>
-    <h2 class="section-title en reveal">One Ecosystem.<br>Six Worlds.</h2>
-    <p class="section-fa reveal">شش جهان دیجیتال، در مدار یک هسته.</p>
+    <h2 class="section-title en reveal">One Ecosystem.<br>Five Worlds.</h2>
+    <p class="section-fa reveal">پنج جهان دیجیتال، در مدار یک هسته.</p>
     <div class="worlds-stage reveal" id="worldsStage">
       <div class="worlds-orbit" id="worldsOrbit">
         <div class="world core-world">
@@ -878,23 +849,20 @@ footer{
             <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" stroke="#fff" stroke-width="1.3"/><path d="M12 2v10m0 0 9-5m-9 5-9-5m9 5v10" stroke="rgba(255,255,255,.7)" stroke-width="1"/></svg>
           </div><span>CUBE</span>
         </div>
-        <!-- angles are 360/n apart; six worlds means 60, not 72 -->
+        <!-- angles are 360/n apart; five worlds means 72, not 60 -->
         <a class="world" href="https://t.me/Cube_VPNN" target="_blank" rel="noopener" data-angle="0" data-brand="vpn">
           <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-vpn"/></svg></div><span>CubeVPN</span>
         </a>
-        <a class="world pu" href="https://t.me/Cubepy" target="_blank" rel="noopener" data-angle="60" data-brand="pay">
+        <a class="world pu" href="https://t.me/Cubepy" target="_blank" rel="noopener" data-angle="72" data-brand="pay">
           <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-pay"/></svg></div><span>CubePay</span>
         </a>
-        <a class="world" href="https://cubegift.ir/" target="_blank" rel="noopener" data-angle="120" data-brand="gift">
-          <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-gift"/></svg></div><span>CubeGift</span>
-        </a>
-        <a class="world pu" href="https://cubely.ir/" target="_blank" rel="noopener" data-angle="180" data-brand="cubely">
+        <a class="world" href="https://cubely.ir/" target="_blank" rel="noopener" data-angle="144" data-brand="cubely">
           <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-cubely"/></svg></div><span>Cubely</span>
         </a>
-        <a class="world" href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-angle="240" data-brand="saz">
+        <a class="world pu" href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-angle="216" data-brand="saz">
           <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-saz"/></svg></div><span>CubeSaz</span>
         </a>
-        <a class="world pu" href="https://t.me/CubePanel" target="_blank" rel="noopener" data-angle="300" data-brand="master">
+        <a class="world" href="https://t.me/CubePanel" target="_blank" rel="noopener" data-angle="288" data-brand="master">
           <div class="sphere"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg></div><span>CubeMaster</span>
         </a>
       </div>
@@ -950,7 +918,6 @@ footer{
   <div class="footer-links">
     <a href="https://t.me/Cube_VPNN" target="_blank" rel="noopener" data-brand="vpn"><svg class="mark" aria-hidden="true"><use href="#m-vpn"/></svg>CubeVPN</a>
     <a href="https://t.me/Cubepy" target="_blank" rel="noopener" data-brand="pay"><svg class="mark" aria-hidden="true"><use href="#m-pay"/></svg>CubePay</a>
-    <a href="https://cubegift.ir/" target="_blank" rel="noopener" data-brand="gift"><svg class="mark" aria-hidden="true"><use href="#m-gift"/></svg>CubeGift</a>
     <a href="https://cubely.ir/" target="_blank" rel="noopener" data-brand="cubely"><svg class="mark" aria-hidden="true"><use href="#m-cubely"/></svg>Cubely</a>
     <a href="https://t.me/CubeSaz" target="_blank" rel="noopener" data-brand="saz"><svg class="mark" aria-hidden="true"><use href="#m-saz"/></svg>CubeSaz</a>
     <a href="https://t.me/CubePanel" target="_blank" rel="noopener" data-brand="master"><svg class="mark" aria-hidden="true"><use href="#m-master"/></svg>CubeMaster</a>
@@ -1487,11 +1454,6 @@ function loadThree(){
       desc:'درگاهی که به‌جای شما پیامک بانکتان را می‌خواند — پرداخت کارت‌به‌کارت و کریپتو برای ربات‌ها و سایت‌ها.',
       feats:['تشخیص و تسویه خودکار زیر ۳۰ ثانیه','بدون نیاز به اینماد یا کد اقتصادی','پرداخت کریپتو: USDT · TRX · TON','API ساده با مستندات کامل'],
       url:'https://t.me/Cubepy',cta:'Join CubePay'},
-    gift:{name:'CubeGift',color:'#0066FF',glow:'rgba(0,102,255,.18)',
-      tag:'گیفت‌کارتی که همیشه اصله.',
-      desc:'هر کد پیش از رسیدن به شما به‌صورت خودکار اعتبارسنجی می‌شود — استیم، پلی‌استیشن، گوگل‌پلی و اپل با قیمت عمده.',
-      feats:['اعتبارسنجی خودکار کدها پیش از تحویل','بیش از ۴۰۰ برند فعال','میانگین تحویل زیر ۱ دقیقه','پشتیبانی انسانی ۲۴/۷ + بازگشت خودکار وجه'],
-      url:'https://cubegift.ir/',cta:'Visit cubegift.ir'},
     cubely:{name:'Cubely',color:'#7C3AED',glow:'rgba(124,58,237,.18)',
       tag:'فروشگاه سرویس‌های دیجیتال.',
       desc:'سرویس‌های دیجیتال برای بیش از ۴۰ پلتفرم — سریع، امن و کاملاً خودکار.',
