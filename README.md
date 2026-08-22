@@ -2,7 +2,7 @@
 
 🌐 **https://cubesystem.top**
 
-لندینگ رسمی اکوسیستم Cube — اتصال، پرداخت، بازار دیجیتال، ساخت ربات و زیرساخت.
+لندینگ رسمی اکوسیستم Cube — اتصال، پرداخت، بازار دیجیتال و ساخت ربات.
 
 | برند | لینک |
 |---|---|
@@ -10,7 +10,6 @@
 | CubePay | https://t.me/Cubepy |
 | Cubely | https://cubely.ir |
 | CubeSaz | https://t.me/CubeSaz |
-| CubeMaster | https://t.me/CubePanel |
 
 ساخته‌شده با Three.js و GSAP — بدون هیچ وابستگی CDN (کتابخانه‌ها در `assets/vendor/`).
 
