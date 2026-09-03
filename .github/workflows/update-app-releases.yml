@@ -20,7 +20,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # continue-on-error, not a bare run: the script deliberately exits
+      # non-zero when an app cannot be resolved, so that a broken source is
+      # visible in Actions. Without this the commit step below is skipped and
+      # one unresolvable app freezes the whole page — which is exactly what
+      # happened for three weeks, holding CubePilot at v0.1.16 while the apps
+      # that did resolve were also stuck behind it.
       - name: Rewrite the APPS block in apps/index.html
+        id: rewrite
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 .github/scripts/update_app_releases.py
@@ -40,11 +48,22 @@ jobs:
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
+      # Still fail the run when a source could not be resolved, so it shows up
+      # in Actions — but only after whatever did resolve has been published.
+      - name: Report unresolved sources
+        if: steps.rewrite.outcome == 'failure'
+        run: |
+          echo "::error::One or more apps could not be resolved — see the rewrite step. The others were published."
+          exit 1
+
   # The commit above cannot trigger the deploy workflow on its own — pushes
   # made with GITHUB_TOKEN never fire another workflow — so a refreshed page
   # would sit in the repo and never reach the bucket. Call the deploy here.
   deploy:
     needs: refresh
-    if: needs.refresh.outputs.changed == 'true'
+    # always(), because the job above now fails on purpose when a source is
+    # unresolvable. Without it a dependent job is skipped on that failure, and
+    # the refreshed page would reach the repo but never the bucket.
+    if: always() && needs.refresh.outputs.changed == 'true'
     uses: ./.github/workflows/deploy-arvan.yml
     secrets: inherit

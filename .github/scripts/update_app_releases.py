@@ -36,14 +36,14 @@ PAGE = os.path.join(os.path.dirname(os.path.dirname(
 SOURCES = {
     'cubepilot-android': {
         'repo': 'cubepy/CubePilot',
-        # every CubePilot build so far is tagged as a pre-release
-        'allow_prerelease': True,
-        'asset_re': r'^CubePilot-v[\d.]+-android\.apk$',
+        # Underscores, and one file per ABI: the naming changed at v0.4.0,
+        # and the old hyphenated pattern quietly stopped matching. arm64 is
+        # the build nearly every current phone wants.
+        'asset_re': r'^CubePilot_v[\d.]+_arm64_v8a\.apk$',
     },
     'cubepilot-windows': {
         'repo': 'cubepy/CubePilot',
-        'allow_prerelease': True,
-        'asset_re': r'^CubePilot-v[\d.]+-windows-x64\.zip$',
+        'asset_re': r'^CubePilot_v[\d.]+_windows_x64\.zip$',
     },
     'cubevpn-android': {
         'repo': 'cubepy/CubeVPN',
@@ -96,6 +96,14 @@ def version_from(release):
     return release.get('tag_name') or ''
 
 
+def pick_asset(rel, spec):
+    assets = rel.get('assets', [])
+    if 'asset_re' in spec:
+        pattern = re.compile(spec['asset_re'])
+        return next((a for a in assets if pattern.match(a.get('name', ''))), None)
+    return next((a for a in assets if a.get('name') == spec['asset']), None)
+
+
 def resolve(app_id, spec):
     repo = spec['repo']
     if 'fixed_tag' in spec:
@@ -111,19 +119,22 @@ def resolve(app_id, spec):
             raise LookupError(f'{app_id}: no release in {repo} matches '
                               f'{prefix!r}')
         matching.sort(key=lambda r: r.get('published_at') or '', reverse=True)
-        rel = matching[0]
+        candidates = matching
 
-    assets = rel.get('assets', [])
-    if 'asset_re' in spec:
-        pattern = re.compile(spec['asset_re'])
-        asset = next((a for a in assets if pattern.match(a.get('name', ''))), None)
-        wanted = spec['asset_re']
+    # Newest release first, but keep walking back until one actually carries
+    # the file. A release published before its build finishes — or one whose
+    # assets were later removed — would otherwise take the card down with it,
+    # even though a perfectly good download is one release older.
+    tried = []
+    for rel in ([rel] if 'fixed_tag' in spec else candidates):
+        asset = pick_asset(rel, spec)
+        if asset is not None:
+            break
+        tried.append(rel.get('tag_name'))
     else:
-        asset = next((a for a in assets if a.get('name') == spec['asset']), None)
-        wanted = spec['asset']
-    if asset is None:
-        raise LookupError(f'{app_id}: no asset matching {wanted!r} in '
-                          f'{repo} release {rel.get("tag_name")!r}')
+        raise LookupError(f'{app_id}: no asset matching '
+                          f'{spec.get("asset_re") or spec["asset"]!r} in '
+                          f'{repo}, tried {tried[:5]}')
 
     digest = (asset.get('digest') or '')
     return {
