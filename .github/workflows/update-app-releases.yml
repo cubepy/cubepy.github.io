@@ -1,0 +1,57 @@
+name: Refresh app release data
+
+# Keeps the version, size, date, checksum and download URL on /apps in sync
+# with the GitHub Releases they come from, so the page never advertises a
+# stale build. Every six hours, so a release published in the evening is on
+# the page the same night rather than the next morning.
+#
+# The site is served by GitHub Pages straight from this branch, so pushing is
+# the whole deploy — there is nothing else to call.
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # continue-on-error, not a bare run: the script deliberately exits
+      # non-zero when an app cannot be resolved, so that a broken source is
+      # visible in Actions. Without this the commit step below is skipped and
+      # one unresolvable app freezes the whole page — which is exactly what
+      # happened for three weeks, holding CubePilot at v0.1.16 while the apps
+      # that did resolve were also stuck behind it.
+      - name: Rewrite the APPS block in apps/index.html
+        id: rewrite
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 .github/scripts/update_app_releases.py
+
+      - name: Commit if anything moved
+        id: commit
+        run: |
+          if git diff --quiet -- apps/index.html; then
+            echo "release data already current"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/index.html
+          git commit -m "chore: refresh app release data on /apps"
+          git push
+
+      # Still fail the run when a source could not be resolved, so it shows up
+      # in Actions — but only after whatever did resolve has been published.
+      - name: Report unresolved sources
+        if: steps.rewrite.outcome == 'failure'
+        run: |
+          echo "::error::One or more apps could not be resolved — see the rewrite step. The others were published."
+          exit 1
+

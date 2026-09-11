@@ -5,15 +5,15 @@
      guess, and Google ignores lastmod it cannot trust. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://cubesystem.top/</loc>
+    <loc>https://cubepy.github.io/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://cubesystem.top/apps/</loc>
+    <loc>https://cubepy.github.io/apps/</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://cubesystem.top/cubesaz-site/</loc>
+    <loc>https://cubepy.github.io/cubesaz-site/</loc>
     <priority>0.8</priority>
   </url>
 </urlset>

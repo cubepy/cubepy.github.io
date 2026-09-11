@@ -1,6 +1,6 @@
 # Cube Ecosystem
 
-🌐 **https://cubesystem.top**
+🌐 **https://cubepy.github.io**
 
 لندینگ رسمی اکوسیستم Cube — اتصال، پرداخت، بازار دیجیتال و ساخت ربات.
 
