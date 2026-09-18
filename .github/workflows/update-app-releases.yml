@@ -47,11 +47,21 @@ jobs:
           git commit -m "chore: refresh app release data on /apps"
           git push
 
-      # Still fail the run when a source could not be resolved, so it shows up
-      # in Actions — but only after whatever did resolve has been published.
+      # A warning, not a failed run. Failing mailed a notification every six
+      # hours for as long as a source stayed broken, which is most of a month
+      # for one that needs someone else to fix it — and mail that arrives four
+      # times a day on a known problem is mail nobody reads. The unresolved
+      # list is written to the run summary instead, where it keeps for anyone
+      # who looks, without paging anyone who already knows.
       - name: Report unresolved sources
         if: steps.rewrite.outcome == 'failure'
         run: |
-          echo "::error::One or more apps could not be resolved — see the rewrite step. The others were published."
-          exit 1
+          echo "::warning::One or more apps could not be resolved — see the rewrite step. The others were published."
+          {
+            echo "### Unresolved sources"
+            echo
+            echo "The refresh ran and published everything it could resolve."
+            echo "At least one app could not be, and kept its previous values —"
+            echo "open the *Rewrite the APPS block* step above for which, and why."
+          } >> "$GITHUB_STEP_SUMMARY"
 
